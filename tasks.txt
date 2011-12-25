@@ -1,22 +1,15 @@
-Stats: Number correct
-Flash red when incorrect
 Use canvas
 Only show five choices
 Show hiragana in a grid
-Provide feature to turn on romanji
-Mouse icon
-Title
 Audio
 iPad support
 Move icons around
 Different types of hints
 Stats: Average time
 Score: Distance travelled with mouse
-Show stats underneath
+Plan stats
 Remember score client side
 Fade out characters with time
-Toggle chart
-Box isn't big enough for WA
 Detect scrollbars and resize
 Hack google chrome translate feature
 Spell out words

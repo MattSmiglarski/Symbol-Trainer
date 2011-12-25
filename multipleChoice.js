@@ -32,9 +32,6 @@ function doOne(data) {
 
 		function answerGiven(value) {
 				if (typeof value === 'undefined' || value === currentValue) {
-					for (var i=0; i<correctCallbacks.length; i++) {
-						correctCallbacks[i]();
-					}
 					var i = Math.floor(Math.random() * $('choices').children.length)
 					currentValue = Object.keys(data)[i];
 					questionEl.innerHTML = currentValue;
@@ -44,7 +41,9 @@ function doOne(data) {
 							statusEl.style.backgroundColor = 'green';
 							window.setTimeout("document.getElementById('status').style = '" + originalStyle + "'", 100);
 						}
-
+					for (var i=0; i<correctCallbacks.length; i++) {
+						correctCallbacks[i]();
+					}
 				} else {
 					for (var i=0; i<incorrectCallbacks.length; i++) {
 						incorrectCallbacks[i]();
@@ -88,15 +87,10 @@ plugin: function (pluginName, toggleFunction) {
 						 toggleFunction(flag);
 				});
 				return {};
-				},
-addCorrectCallback: function(callback) {
-	correctCallbacks.push(callback);
-},
-addIncorrectCallback: function(callback) {
-	incorrectCallbacks.push(callback);
-},
-addTimerCallback: function(callback) {
-	timerCallbacks.push(callback);
-}
+				}
+,addCorrectCallback: function(callback) { correctCallbacks.push(callback); }
+,addIncorrectCallback: function(callback) {	incorrectCallbacks.push(callback); }
+,addTimerCallback: function(callback) { timerCallbacks.push(callback); }
+,getAnswer: function() { return data[currentValue]; }
 };
 }

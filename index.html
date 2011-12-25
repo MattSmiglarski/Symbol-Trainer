@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Hiragana</title>
 	<script type="text/javascript" src="multipleChoice.js"></script>
 	<script type="text/javascript" src="hiragana.js"></script>
 	<link rel="stylesheet" href="multipleChoice.css"></link>
@@ -15,7 +16,6 @@ function standardPlugin(name) {
 	var label = document.createElement('span');
 	var data = document.createElement('span');
 	label.innerHTML = name + ': ';
-	data.innerHTML = '0';
 	wrapper.appendChild(label);
 	wrapper.appendChild(data);
 	wrapper.className = 'awesome plugin';
@@ -26,7 +26,6 @@ function standardPlugin(name) {
 	var plugin = game.plugin(name, function(flag) {
 		wrapper.style.display = flag? 'block' : 'none';
 	});
-	console.log(plugin);
 	plugin.updateValue = function(value) {
 		data.innerHTML = value;
 	};
@@ -43,15 +42,22 @@ var scorePlugin = standardPlugin('Correct');
 game.addCorrectCallback(function() {
 	scorePlugin.incrementValue();
 });
+scorePlugin.updateValue(0);
 var incorrectScorePlugin = standardPlugin('Incorrect');
 game.addIncorrectCallback(function() {
 	incorrectScorePlugin.incrementValue();
 });
-
+incorrectScorePlugin.updateValue(0);
+var revealPlugin = standardPlugin('Reveal');
+game.addCorrectCallback(function() {
+	revealPlugin.updateValue(game.getAnswer());
+});
+revealPlugin.updateValue(game.getAnswer());
 var timerPlugin = standardPlugin('Timer');
 game.addTimerCallback(function() {
 	timerPlugin.incrementValue();
 });
+timerPlugin.updateValue(0);
 var romanjiPlugin = game.plugin('Romanji', function(flag) {
 	var hints = document.getElementsByClassName('hint');
 	for (var i=0; i<hints.length; i++) {
