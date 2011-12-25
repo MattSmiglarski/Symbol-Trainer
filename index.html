@@ -4,12 +4,13 @@
 	<title>Hiragana</title>
 	<script type="text/javascript" src="multipleChoice.js"></script>
 	<script type="text/javascript" src="hiragana.js"></script>
+	<script type="text/javascript" src="greek-small-letters.js"></script>
 	<link rel="stylesheet" href="multipleChoice.css"></link>
 </head>
 <body>
 <script>
 window.onload = function() {
-var game = doOne(hiragana);
+var game = doOne(greek);
 
 function standardPlugin(name) {
 	var wrapper = document.createElement('div');
@@ -64,6 +65,22 @@ var romanjiPlugin = game.plugin('Romanji', function(flag) {
 		hints[i].style.display = (flag? 'block' : 'none');
 	}
 });
+var randomisePlugin = game.plugin('Randomise', function(flag) {});
+game.addCorrectCallback(function() {
+	var choicesEl = document.getElementById('choices');
+	var choices = new Array();
+	while (choicesEl.children.length > 0) {
+		var element = choicesEl.children[0];
+		choicesEl.removeChild(element);
+		choices.push(element);
+	}
+	while (choices.length > 0) {
+		var index = Math.floor(Math.random() * choices.length);
+		choicesEl.appendChild(choices[index]);
+		choices = choices.slice(0, index).concat(choices.slice(index + 1));
+	}
+});
+
 }
 </script>
 <div id="status"><div id="question" class="awesome"></div></div>

@@ -1,20 +1,18 @@
-Use canvas
 Only show five choices
-Show hiragana in a grid
-Audio
-iPad support
-Move icons around
-Different types of hints
-Stats: Average time
-Score: Distance travelled with mouse
+Dynamic sizing of option
+Config options with values -- sizes.
+Greek
+Katakana
+Cyrillic
+Show hiragana in standardazed layout
 Plan stats
+Plan scoring
+Plan automated hints
 Remember score client side
 Fade out characters with time
-Detect scrollbars and resize
 Hack google chrome translate feature
 Spell out words
 Use input media to allow users to record sounds
-Hint: indicate correct answer
 Hint: Perform a random hint every 5 seconds.
 Gauge level of hints based on score/speed.
 Arrange grid in standard layout
@@ -25,9 +23,14 @@ Require user to pronounce character
 Tell the user what to do when they first visit the page.
 Remember config options
 Make it work offline
-Queue up options
+Queue up questions
 Pastel colours
 Export options
 Hide config options
 Draggable plugin widgets
-
+Favicon -- Kanji for Japan
+Use canvas
+Audio
+iPad support
+Select symbol list
+Detect scrollbars and resize

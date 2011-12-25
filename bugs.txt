@@ -1,0 +1,2 @@
+Timer is not reset after a correct answer.
+Plugins are not disabled correctly

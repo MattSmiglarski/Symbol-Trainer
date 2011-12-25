@@ -39,7 +39,7 @@ function doOne(data) {
 					if (typeof value !== 'undefined') {
 							var originalStyle = statusEl.style;
 							statusEl.style.backgroundColor = 'green';
-							window.setTimeout("document.getElementById('status').style = '" + originalStyle + "'", 100);
+							window.setTimeout("document.getElementById('status').style = '" + originalStyle + "'", 300);
 						}
 					for (var i=0; i<correctCallbacks.length; i++) {
 						correctCallbacks[i]();
@@ -50,7 +50,7 @@ function doOne(data) {
 					}
 					var originalStyle = statusEl.style;
 					statusEl.style.backgroundColor = 'red';
-					window.setTimeout("document.getElementById('status').style = '" + originalStyle + "'", 100);
+					window.setTimeout("document.getElementById('status').style = '" + originalStyle + "'", 300);
 				}
 		}
 
