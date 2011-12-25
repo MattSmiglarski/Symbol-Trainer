@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="multipleChoice.js"></script>
+	<script type="text/javascript" src="hiragana.js"></script>
+	<link rel="stylesheet" href="multipleChoice.css"></link>
+</head>
+<body>
+<script>
+window.onload = function() {
+var game = doOne(hiragana);
+var score = 0;
+var time = 0;
+var timerEl = document.getElementById('timer');
+var scorePlugin = game.plugin('Score', function(flag) {
+	var scoreEl = document.getElementById('score');
+	scoreEl.style.display = flag? 'inline-block' : 'none';
+});
+scorePlugin.addCorrectCallback(function() {
+	score+=1;
+	document.getElementById('score').innerHTML = score;
+});
+
+var romanjiPlugin = game.plugin('Romanji', function(flag) {
+	var hints = document.getElementsByClassName('hint');
+	for (var i=0; i<hints.length; i++) {
+		hints[i].style.display = (flag? 'block' : 'none');
+	}
+});
+
+var timerPlugin = game.plugin('Timer', function(flag) {
+	timerEl.innerHTML = '';
+	timerEl.style.display = flag? 'inline-block' : 'none';
+});
+
+timerPlugin.addTimerCallback(function() {
+	var time = parseInt(timerEl.innerHTML) || 0;
+	timerEl.innerHTML = time + 1;
+});
+}
+</script>
+<div id="status">
+	<div id="question"></div>
+	<span id="timer"></span>
+	<span id="score">0</div>
+</div>
+<div id="choices"></div>
+<div id="config">
+</div>
+</body>
+</html>

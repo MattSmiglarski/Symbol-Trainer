@@ -1,0 +1,35 @@
+Stats: Number correct
+Flash red when incorrect
+Use canvas
+Only show five choices
+Show hiragana in a grid
+Provide feature to turn on romanji
+Mouse icon
+Title
+Audio
+iPad support
+Move icons around
+Different types of hints
+Stats: Average time
+Score: Distance travelled with mouse
+Show stats underneath
+Remember score client side
+Fade out characters with time
+Toggle chart
+Box isn't big enough for WA
+Detect scrollbars and resize
+Hack google chrome translate feature
+Spell out words
+Use input media to allow users to record sounds
+Hint: indicate correct answer
+Hint: Perform a random hint every 5 seconds.
+Gauge level of hints based on score/speed.
+Arrange grid in standard layout
+Randomize grid with animation
+Require user to draw character
+Require user to pronounce character
+2-player game with streaming connections
+Tell the user what to do when they first visit the page.
+Remember config options
+Make it work offline
+Queue up options
