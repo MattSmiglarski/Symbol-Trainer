@@ -16,31 +16,42 @@ function doOne(data) {
 		var offHtml = ' On/<span style="color: blue;">Off</span>';
 		var questionEl= $('question');
 		var choicesEl = $('choices');
+		var statusEl = $('status');
 		var currentValue;
 		var correctCallbacks = new Array();
 		var incorrectCallbacks = new Array();
 		var timerCallbacks = new Array();
-	var timer;
-	window.timerSupport = function() {
-		for (var i=0; i<timerCallbacks.length; i++) {
-			timerCallbacks[i]();
-		}
-		timer = setTimeout("timerSupport()", 1000);
-	};
-	timerSupport();
+		var timer;
+		window.timerSupport = function() {
+			for (var i=0; i<timerCallbacks.length; i++) {
+				timerCallbacks[i]();
+			}
+			timer = setTimeout("timerSupport()", 1000);
+		};
+		timerSupport();
 
 		function answerGiven(value) {
-				if (value === currentValue) {
+				if (typeof value === 'undefined' || value === currentValue) {
 					for (var i=0; i<correctCallbacks.length; i++) {
 						correctCallbacks[i]();
 					}
 					var i = Math.floor(Math.random() * $('choices').children.length)
 					currentValue = Object.keys(data)[i];
 					questionEl.innerHTML = currentValue;
+ 					// Hacks breed hacks. This avoids flashing green upon initialisation.
+					if (typeof value !== 'undefined') {
+							var originalStyle = statusEl.style;
+							statusEl.style.backgroundColor = 'green';
+							window.setTimeout("document.getElementById('status').style = '" + originalStyle + "'", 100);
+						}
+
 				} else {
-					for (var i=0; i<incorrectCallbacks.length; j++) {
+					for (var i=0; i<incorrectCallbacks.length; i++) {
 						incorrectCallbacks[i]();
 					}
+					var originalStyle = statusEl.style;
+					statusEl.style.backgroundColor = 'red';
+					window.setTimeout("document.getElementById('status').style = '" + originalStyle + "'", 100);
 				}
 		}
 
@@ -63,7 +74,7 @@ function doOne(data) {
 		answerGiven(); // initialise
 
 		return {
-plugin : function (pluginName, toggleFunction) {
+plugin: function (pluginName, toggleFunction) {
 				 var flag = false;
 				 var configEl = document.createElement('a');
 				 configEl.innerHTML = pluginName + offHtml;
@@ -76,17 +87,16 @@ plugin : function (pluginName, toggleFunction) {
 						 configEl.innerHTML = pluginName + (flag? onHtml : offHtml);
 						 toggleFunction(flag);
 				});
-				return {
-					addCorrectCallback: function(callback) {
-						correctCallbacks.push(callback);
-					},
-					addIncorrectCallback: function(callback) {
-						incorrectCallbacks.push(callback);
-					},
-					addTimerCallback: function(callback) {
-						timerCallbacks.push(callback);
-					}
-				};
-		 }
-	};
+				return {};
+				},
+addCorrectCallback: function(callback) {
+	correctCallbacks.push(callback);
+},
+addIncorrectCallback: function(callback) {
+	incorrectCallbacks.push(callback);
+},
+addTimerCallback: function(callback) {
+	timerCallbacks.push(callback);
+}
+};
 }

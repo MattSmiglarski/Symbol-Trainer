@@ -33,3 +33,8 @@ Tell the user what to do when they first visit the page.
 Remember config options
 Make it work offline
 Queue up options
+Pastel colours
+Export options
+Hide config options
+Draggable plugin widgets
+
