@@ -55,7 +55,6 @@ function doOne(data) {
 
 		function answerGiven(value) {
 				if (typeof value === 'undefined' || value === currentValue) {
-					if (this.limitedChoices) {
 						choicesEl.innerHTML = '';
 						var i = Math.floor(Math.random() * Object.keys(data).length);
 						currentValue = Object.keys(data)[i];
@@ -73,7 +72,6 @@ function doOne(data) {
 							choicesEl.appendChild(choiceEl);
 							left = left.slice(0, j).concat(left.slice(j+1));
 						}
-					}
 					 
 					randomiseOptions();
 					// Hacks breed hacks. This avoids flashing green upon initialisation.
