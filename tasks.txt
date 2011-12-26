@@ -1,6 +1,7 @@
-Invert key/values
-Dynamic sizing of option
-Config options with values -- sizes.
+Layer of indirection over config values
+Config options with values
+* Dynamic sizing of option
+** Invert key/values
 Greek
 Katakana
 Cyrillic

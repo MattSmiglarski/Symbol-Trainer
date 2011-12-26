@@ -85,21 +85,16 @@ function doOne(data) {
 		function answerGiven(value) {
 			if (value === currentValue) {
 				nextQuestion();
-				if (config.limitChoices) {
-					createChoices(config.limitChoices);
-					randomiseOptions();
-				} else {
-					createChoices();
-				}
+				createChoices(config.limitChoices);
 				statusEl.style.backgroundColor = 'green';
-				window.setTimeout("document.getElementById('status').style = ''", 300);
-					doCallbacks('correct');
-				} else {
-					doCallbacks('incorrect');
-					statusEl.style.backgroundColor = 'red';
-					var setStyle = "document.getElementById('status').style = ''";
-					window.setTimeout(setStyle, 300);
-				}
+				window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
+				doCallbacks('correct');
+			} else {
+				doCallbacks('incorrect');
+				statusEl.style.backgroundColor = 'red';
+				var setStyle = "document.getElementById('status').style.backgroundColor = ''";
+				window.setTimeout(setStyle, 300);
+			}
 		}
 
 		function createChoice(key, value) {
@@ -134,7 +129,7 @@ plugin: function (pluginName, toggleFunction) {
 						 flag = !flag;
 						 configEl.innerHTML = pluginName + (flag? onHtml : offHtml);
 						 toggleFunction(flag);
-				});
+				}, false);
 				var thePlugin = {
 					isEnabled: function() { return flag; }
 					,getCallback: function(hook) { return hooks[hook]; }
