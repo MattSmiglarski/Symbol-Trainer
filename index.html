@@ -2,85 +2,16 @@
 <html>
 <head>
 	<title>Hiragana</title>
+	<link rel="stylesheet" href="multipleChoice.css"></link>
 	<script type="text/javascript" src="multipleChoice.js"></script>
 	<script type="text/javascript" src="hiragana.js"></script>
 	<script type="text/javascript" src="greek-small-letters.js"></script>
-	<link rel="stylesheet" href="multipleChoice.css"></link>
+	<script type="text/javascript" src="plugins.js"></script>
 </head>
 <body>
 <script>
 window.onload = function() {
-var game = doOne(greek);
-
-function standardPlugin(name) {
-	var wrapper = document.createElement('div');
-	var label = document.createElement('span');
-	var data = document.createElement('span');
-	label.innerHTML = name + ': ';
-	wrapper.appendChild(label);
-	wrapper.appendChild(data);
-	wrapper.className = 'awesome plugin';
-	wrapper.style.display = 'none';
-	wrapper.style.display = 'none';
-	document.getElementById('status').appendChild(wrapper);
-
-	var plugin = game.plugin(name, function(flag) {
-		wrapper.style.display = flag? 'block' : 'none';
-	});
-	plugin.updateValue = function(value) {
-		data.innerHTML = value;
-	};
-	plugin.retrieveValue = function() {
-		return parseInt(data.innerHTML);
-	};
-	plugin.incrementValue = function() {
-		var newValue = this.retrieveValue() + 1;
-		this.updateValue(newValue);
-	};
-	return plugin;
-}
-var scorePlugin = standardPlugin('Correct');
-game.addCorrectCallback(function() {
-	scorePlugin.incrementValue();
-});
-scorePlugin.updateValue(0);
-var incorrectScorePlugin = standardPlugin('Incorrect');
-game.addIncorrectCallback(function() {
-	incorrectScorePlugin.incrementValue();
-});
-incorrectScorePlugin.updateValue(0);
-var revealPlugin = standardPlugin('Reveal');
-game.addCorrectCallback(function() {
-	revealPlugin.updateValue(game.getAnswer());
-});
-revealPlugin.updateValue(game.getAnswer());
-var timerPlugin = standardPlugin('Timer');
-game.addTimerCallback(function() {
-	timerPlugin.incrementValue();
-});
-timerPlugin.updateValue(0);
-var romanjiPlugin = game.plugin('Romanji', function(flag) {
-	var hints = document.getElementsByClassName('hint');
-	for (var i=0; i<hints.length; i++) {
-		hints[i].style.display = (flag? 'block' : 'none');
-	}
-});
-var randomisePlugin = game.plugin('Randomise', function(flag) {});
-game.addCorrectCallback(function() {
-	var choicesEl = document.getElementById('choices');
-	var choices = new Array();
-	while (choicesEl.children.length > 0) {
-		var element = choicesEl.children[0];
-		choicesEl.removeChild(element);
-		choices.push(element);
-	}
-	while (choices.length > 0) {
-		var index = Math.floor(Math.random() * choices.length);
-		choicesEl.appendChild(choices[index]);
-		choices = choices.slice(0, index).concat(choices.slice(index + 1));
-	}
-});
-
+doPlugins(doOne(greek));
 }
 </script>
 <div id="status"><div id="question" class="awesome"></div></div>

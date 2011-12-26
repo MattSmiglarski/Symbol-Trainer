@@ -18,14 +18,23 @@ function doOne(data) {
 		var choicesEl = $('choices');
 		var statusEl = $('status');
 		var currentValue;
-		var correctCallbacks = new Array();
-		var incorrectCallbacks = new Array();
-		var timerCallbacks = new Array();
+		var plugins = new Array();
+
+		function doCallbacks(hook) {
+			for (var i=0; i<plugins.length; i++) {
+				var plugin = plugins[i];
+				if (plugin.isEnabled()) {
+					var callback = plugin.getCallback(hook);
+					if (typeof callback === 'function') {
+						callback();
+					}
+				}
+			}
+		}
+
 		var timer;
 		window.timerSupport = function() {
-			for (var i=0; i<timerCallbacks.length; i++) {
-				timerCallbacks[i]();
-			}
+			doCallbacks('timer');
 			timer = setTimeout("timerSupport()", 1000);
 		};
 		timerSupport();
@@ -37,21 +46,16 @@ function doOne(data) {
 					questionEl.innerHTML = currentValue;
  					// Hacks breed hacks. This avoids flashing green upon initialisation.
 					if (typeof value !== 'undefined') {
-							var originalStyle = statusEl.style;
 							statusEl.style.backgroundColor = 'green';
-							window.setTimeout("document.getElementById('status').style = '" + originalStyle + "'", 300);
+							window.setTimeout("document.getElementById('status').style = ''", 300);
 						}
-					for (var i=0; i<correctCallbacks.length; i++) {
-						correctCallbacks[i]();
-					}
+						
+					doCallbacks('correct');
 				} else {
-					for (var i=0; i<incorrectCallbacks.length; i++) {
-						incorrectCallbacks[i]();
-					}
-					var originalStyle = statusEl.style;
+					doCallbacks('incorrect');
 					statusEl.style.backgroundColor = 'red';
-					window.setTimeout("document.getElementById('status').style = '" + originalStyle + "'", 300);
-				}
+					var setStyle = "document.getElementById('status').style = ''";
+					window.setTimeout(setStyle, 900); }
 		}
 
 		function createChoice(key, value) {
@@ -73,7 +77,9 @@ function doOne(data) {
 		answerGiven(); // initialise
 
 		return {
+
 plugin: function (pluginName, toggleFunction) {
+				 var hooks = {};
 				 var flag = false;
 				 var configEl = document.createElement('a');
 				 configEl.innerHTML = pluginName + offHtml;
@@ -86,11 +92,14 @@ plugin: function (pluginName, toggleFunction) {
 						 configEl.innerHTML = pluginName + (flag? onHtml : offHtml);
 						 toggleFunction(flag);
 				});
-				return {};
+				var thePlugin = {
+					isEnabled: function() { return flag; }
+					,getCallback: function(hook) { return hooks[hook]; }
+					,setCallback: function(hook, callback) { hooks[hook] = callback; }
+				};
+				plugins.push(thePlugin);
+				return thePlugin;
 				}
-,addCorrectCallback: function(callback) { correctCallbacks.push(callback); }
-,addIncorrectCallback: function(callback) {	incorrectCallbacks.push(callback); }
-,addTimerCallback: function(callback) { timerCallbacks.push(callback); }
 ,getAnswer: function() { return data[currentValue]; }
 };
 }
