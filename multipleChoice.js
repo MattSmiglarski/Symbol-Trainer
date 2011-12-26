@@ -107,6 +107,7 @@ function doOne(data) {
 				choiceEl.className = 'choice';
 				var hint = '<div class="hint">'+key+'</div>';
 				choiceEl.innerHTML = hint + '<span class="option">'+value+'<span>';
+				choiceEl.setAttribute('data-title', key);
 				choiceEl.addEventListener('click', function() {
 					answerGiven(key);
 				}, false);

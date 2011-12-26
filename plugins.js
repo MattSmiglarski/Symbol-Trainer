@@ -52,11 +52,23 @@ function doPlugins(game) {
 				hints[i].style.display = (flag? 'block' : 'none');
 			}
 		});
+		var tooltipPlugin = game.plugin('Tooltips', function(flag) {
+			var choices = document.getElementsByClassName('choice');
+			for (var i=0; i<choices.length; i++) {
+				var c = choices[i];
+				if (flag) {
+					c.setAttribute('title', c.getAttribute('data-title'));
+				} else {
+					c.removeAttribute('title');
+				}
+			}
+		});
 		var randomisePlugin = game.plugin('Randomise', function(flag) {});
 		randomisePlugin.setCallback('correct', function() {
 			game.randomiseOptions();
 		});
-		var limitChoices = game.plugin('Limit', function(flag) {
+
+		game.plugin('Limit', function(flag) {
 			game.config.limitChoices = flag? 10 : false;
 			game.createChoices();
 		});
