@@ -19,6 +19,7 @@ function doOne(data) {
 		var statusEl = $('status');
 		var currentValue;
 		var plugins = new Array();
+		var config = {};
 
 		function doCallbacks(hook) {
 			for (var i=0; i<plugins.length; i++) {
@@ -53,39 +54,52 @@ function doOne(data) {
 		};
 		timerSupport();
 
-		function answerGiven(value) {
-				if (typeof value === 'undefined' || value === currentValue) {
-						choicesEl.innerHTML = '';
-						var i = Math.floor(Math.random() * Object.keys(data).length);
-						currentValue = Object.keys(data)[i];
-						questionEl.innerHTML = currentValue;
-						choicesEl.appendChild(createChoice(currentValue, data[currentValue]));
+		function nextQuestion() {
+			var i = Math.floor(Math.random() * Object.keys(data).length);
+			currentValue = Object.keys(data)[i];
+			questionEl.innerHTML = currentValue;
+		}
 
+		function createChoices() {
+				choicesEl.innerHTML = '';
+				var limit = config.limitChoices;
+				if (limit) {
+						choicesEl.appendChild(createChoice(currentValue, data[currentValue]));
 						var left = Object.keys(data);
 						left = left.slice(0, i).concat(left.slice(i+1));
-						for (var i=0; i<4; i++) {
-							var j = Math.floor(Math.random() * Object.keys(left).length);
-							console.log(Object.keys(left), j);
-							var key = left[j];
-							var choiceEl = createChoice(key, data[key]);
-							console.log(key, data[key]);
-							choicesEl.appendChild(choiceEl);
-							left = left.slice(0, j).concat(left.slice(j+1));
+						for (var i=0; i<limit - 1; i++) {
+								var j = Math.floor(Math.random() * Object.keys(left).length);
+								var key = left[j];
+								var choiceEl = createChoice(key, data[key]);
+								choicesEl.appendChild(choiceEl);
+								left = left.slice(0, j).concat(left.slice(j+1));
 						}
-					 
+				} else {
+					for (var c in data) {
+						var choiceEl = createChoice(c, data[c]);
+						choicesEl.appendChild(choiceEl);
+					}
+				}
+		}
+
+		function answerGiven(value) {
+			if (value === currentValue) {
+				nextQuestion();
+				if (config.limitChoices) {
+					createChoices(config.limitChoices);
 					randomiseOptions();
-					// Hacks breed hacks. This avoids flashing green upon initialisation.
-					if (typeof value !== 'undefined') {
-							statusEl.style.backgroundColor = 'green';
-							window.setTimeout("document.getElementById('status').style = ''", 300);
-						}
-						
+				} else {
+					createChoices();
+				}
+				statusEl.style.backgroundColor = 'green';
+				window.setTimeout("document.getElementById('status').style = ''", 300);
 					doCallbacks('correct');
 				} else {
 					doCallbacks('incorrect');
 					statusEl.style.backgroundColor = 'red';
 					var setStyle = "document.getElementById('status').style = ''";
-					window.setTimeout(setStyle, 300); }
+					window.setTimeout(setStyle, 300);
+				}
 		}
 
 		function createChoice(key, value) {
@@ -99,8 +113,10 @@ function doOne(data) {
 
 				return choiceEl;
 		}
-
-		answerGiven(); // initialise
+ 		
+		// initialise
+		nextQuestion();
+		createChoices();
 
 		return {
 
@@ -128,5 +144,7 @@ plugin: function (pluginName, toggleFunction) {
 				}
 ,getAnswer: function() { return data[currentValue]; }
 ,randomiseOptions: randomiseOptions
+,config: config
+,createChoices: createChoices
 };
 }

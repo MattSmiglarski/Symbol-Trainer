@@ -56,4 +56,8 @@ function doPlugins(game) {
 		randomisePlugin.setCallback('correct', function() {
 			game.randomiseOptions();
 		});
+		var limitChoices = game.plugin('Limit', function(flag) {
+			game.config.limitChoices = flag? 10 : false;
+			game.createChoices();
+		});
 }

@@ -47,7 +47,7 @@ body {
 }
 
 #choices {
-	width: 1223px;
+	width: 1175px;
 	float: left;
 }
 
@@ -56,7 +56,7 @@ body {
 	height: 90px;
 	width: 75px;
 	border: solid black 1px;
-	margin: 10px;
+	margin: 8px;
 	cursor: default;
 }
 
@@ -72,8 +72,8 @@ body {
 .hint {
 	position: absolute;
 	font-size: 12pt;
-	line-height: 25px;
-	margin-left: 2px;
+	line-height: 20px;
+	margin-left: 3px;
 	color: #b2b2b2;
 	display: none;
 }

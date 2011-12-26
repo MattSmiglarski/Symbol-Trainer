@@ -1,4 +1,4 @@
-Only show five choices
+Invert key/values
 Dynamic sizing of option
 Config options with values -- sizes.
 Greek
