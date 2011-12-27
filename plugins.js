@@ -56,7 +56,8 @@ function doPlugins(game) {
 			var choices = document.getElementsByClassName('choice');
 			for (var i=0; i<choices.length; i++) {
 				var c = choices[i];
-				if (flag) {
+				game.config.tooltips = flag;
+				if (flag) { // Apply plugin to current set.
 					c.setAttribute('title', c.getAttribute('data-title'));
 				} else {
 					c.removeAttribute('title');

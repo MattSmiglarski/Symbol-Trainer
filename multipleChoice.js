@@ -103,7 +103,10 @@ function doOne(data) {
 				var hint = '<div class="hint">'+key+'</div>';
 				choiceEl.innerHTML = hint + '<span class="option">'+value+'<span>';
 				choiceEl.setAttribute('data-title', key);
-				choiceEl.addEventListener('click', function() {
+				if (config.tooltipPlugin) {
+					c.setAttribute('title', c.getAttribute('data-title'));
+				}
+choiceEl.addEventListener('click', function() {
 					answerGiven(key);
 				}, false);
 

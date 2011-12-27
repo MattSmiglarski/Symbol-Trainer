@@ -1,2 +1,5 @@
 Timer is not reset after a correct answer.
 Plugins are not disabled correctly
+Tooltips, romanji plugin only applies tooltips for initial set.
+Randomize plugin only applies to next set
+
