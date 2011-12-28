@@ -8,10 +8,6 @@ body {
 	border-bottom: solid black 1px;
 }
 
-.config {
-	font-size: 10pt !important;
-}
-
 #config {
 	display: inline-block;
 	float: right;
@@ -29,7 +25,7 @@ body {
 }
 
 .choice {
-	height: 54px;
+	height: 55px;
 	width: 45px;
 	border-top: solid black 1px;
 	border-bottom: solid black 1px;
@@ -39,18 +35,19 @@ body {
 }
 
 .option {
-	line-height: 42pt;
-	text-align: center;
+	line-height: 160%;
+	text-align: right;
 	font-size: 34pt; 
 	text-align: center;
 	margin:0 auto;
-	display: block;
+	display: none;
 }
 
 .hint {
 	position: absolute;
-	font-size: 7pt;
-	line-height: 12px;
+	font-size: 10pt;
+	line-height: 20px;
 	margin-left: 1px;
 	color: #b2b2b2;
+	display: none;
 }

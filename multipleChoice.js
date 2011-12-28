@@ -58,6 +58,9 @@ function doOne(data) {
 			var i = Math.floor(Math.random() * Object.keys(data).length);
 			currentValue = Object.keys(data)[i];
 			questionEl.innerHTML = data[currentValue];
+			var ideograph = document.getElementById(currentValue);
+			console.log(currentValue, ideograph);
+			ideograph && (ideograph.style.display = 'block');
 		}
 
 		function createChoices() {
@@ -83,9 +86,8 @@ function doOne(data) {
 		}
 
 		function answerGiven(value) {
-			if (value === data[currentValue]) {
+			if (value === currentValue) {
 				nextQuestion();
-				createChoices(config.limitChoices);
 				statusEl.style.backgroundColor = 'green';
 				window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
 				doCallbacks('correct');
@@ -115,7 +117,6 @@ choiceEl.addEventListener('click', function() {
  		
 		// initialise
 		nextQuestion();
-		createChoices();
 
 		return {
 
@@ -145,5 +146,6 @@ plugin: function (pluginName, toggleFunction) {
 ,randomiseOptions: randomiseOptions
 ,config: config
 ,createChoices: createChoices
+,answer: answerGiven
 };
 }

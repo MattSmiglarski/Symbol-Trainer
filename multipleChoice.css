@@ -54,30 +54,3 @@ body {
 	width: 775px;
 	float: left;
 }
-
-#choices > div {
-	display: inline-block;
-	height: 54px;
-	width: 45px;
-	border: solid black 1px;
-	margin: 8px;
-	cursor: default;
-}
-
-.option {
-	line-height: 42pt;
-	text-align: center;
-	font-size: 34pt; 
-	text-align: center;
-	margin:0 auto;
-	display: block;
-}
-
-.hint {
-	position: absolute;
-	font-size: 12pt;
-	line-height: 20px;
-	margin-left: 3px;
-	color: #b2b2b2;
-	display: none;
-}

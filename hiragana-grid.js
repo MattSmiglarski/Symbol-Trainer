@@ -1,3 +1,5 @@
+var game;
+
 var tableValues = [
  '&#x3042'
 ,'&#x3044'
@@ -96,37 +98,45 @@ var tableValues = [
 ,'&#x3093'
 ];
 
-window.onload = function() {
-
 function createChoice(value) {
 	var choiceEl = document.createElement("div");
-	var hint;
+	var hint, ideograph;
 
 	if (value && !document.getElementById('value')) {
-		hint = '<div class="hint">'+hiragana[value]+'</div>';
-		choiceEl.innerHTML = hint + '<span class="option">'+value+'<span>';
+		hint = document.createElement('div');
+		hint.className = "hint";
+		hint.innerHTML = hiragana[value];
+
+		ideograph = document.createElement('div');
+		ideograph.className = 'option';
+		ideograph.innerHTML = value;
+		ideograph.id = value;
+		
+		choiceEl.appendChild(hint);
+		choiceEl.appendChild(ideograph);
 		choiceEl.setAttribute('data-title', hiragana[value]);
-		choiceEl.id = value;
 	}
 	if (value != null){
 		choiceEl.className = 'choice';
 	}
 	this.appendChild(choiceEl);
+	choiceEl.addEventListener('click', function() {
+		game.answer(value);
+	});
 }
 
+window.onload = function() {
 var config = {
 	target: document.getElementById('choices'),
 	setValue: createChoice,
 	columnSpans: [1,1,1,1,1,3,1,2,2,2,1,1],
 };
-
 var grid = G.create(5, 16, config);
 var i;
 var row = 0;
 var col = 15;
 
 for (i = 0; i < tableValues.length; i+=1) {
-	console.log(row, col, tableValues[i]);
 	grid.setValue(row, col, tableValues[i]);
 	if (row < 4) {
 		row+=1;
@@ -137,4 +147,12 @@ for (i = 0; i < tableValues.length; i+=1) {
 		throw "Too much data for grid?";
 	}
 }
+
+game = doOne(hiragana);
+var romanjiPlugin = game.plugin('Romanji', function(flag) {
+	var hints = document.getElementsByClassName('hint');
+	for (var i=0; i<hints.length; i++) {
+		hints[i].style.display = (flag? 'block' : 'none');
+	}
+});
 };
