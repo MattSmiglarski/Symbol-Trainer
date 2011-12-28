@@ -125,6 +125,23 @@ function createChoice(value) {
 	});
 }
 
+var strategy = (function() {
+	var count = 1;
+	var previousQs = {};
+
+	return function() {
+		var data;
+		var i, q;
+
+		data = count%3 == 0? previousQs : hiragana;
+		i = Math.floor(Math.random() * Object.keys(data).length);
+		var q = Object.keys(data)[i];
+		previousQs[q] = 1;
+		count += 1;
+		return q;
+	}
+}());
+
 window.onload = function() {
 var config = {
 	target: document.getElementById('choices'),
@@ -148,7 +165,10 @@ for (i = 0; i < tableValues.length; i+=1) {
 	}
 }
 
-game = doOne(hiragana);
+game = doOne(hiragana, {
+	nextValue: strategy
+});
+
 var romanjiPlugin = game.plugin('Romanji', function(flag) {
 	var hints = document.getElementsByClassName('hint');
 	for (var i=0; i<hints.length; i++) {

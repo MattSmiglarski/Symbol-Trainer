@@ -3,6 +3,10 @@ body {
 	font-family: "Helvetica Neue", "Arial", "Helvetica", "Verdana", sans-serif;
 }
 
+table {
+	border-bottom: solid black 1px;
+}
+
 #status {
 	background-color: #FFF090;
 	border-bottom: solid black 1px;
@@ -28,7 +32,6 @@ body {
 	height: 55px;
 	width: 45px;
 	border-top: solid black 1px;
-	border-bottom: solid black 1px;
 	cursor: default;
 	margin: 0;
 	padding: 0;

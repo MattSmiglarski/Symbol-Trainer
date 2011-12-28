@@ -1,3 +1,10 @@
+Strategies
+==========
+Method for selecting the next question -- override next question
+Strategy: Introduce n, then no new for n*2, repeat.
+
+Other
+=======
 Reintroduce plugins but configurable for continueToRunInBackground, invokeOnToggle and value.
 Enable value to be set from within button
 Enable options to be restricted 

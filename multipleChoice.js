@@ -1,4 +1,4 @@
-function doOne(data) {
+function doOne(data, gameConfig) {
 		if (typeof $ === 'undefined') var $ = function(id) { return document.getElementById(id); }
 
 		if (typeof Object.keys != 'function') {
@@ -7,7 +7,7 @@ function doOne(data) {
 								throw TypeError("Object.keys called on non-object");
 						} 
 						var keys = [];
-						for (var p in obj) obj.hasOwnProperty(p) &&keys.push(p);
+						for (var p in obj) obj.hasOwnProperty(p) && keys.push(p);
 						return keys;
 				}
 		}
@@ -55,34 +55,11 @@ function doOne(data) {
 		timerSupport();
 
 		function nextQuestion() {
-			var i = Math.floor(Math.random() * Object.keys(data).length);
-			currentValue = Object.keys(data)[i];
+			var ideograph;
+			currentValue = gameConfig.nextValue();
 			questionEl.innerHTML = data[currentValue];
-			var ideograph = document.getElementById(currentValue);
-			console.log(currentValue, ideograph);
+			ideograph = document.getElementById(currentValue);
 			ideograph && (ideograph.style.display = 'block');
-		}
-
-		function createChoices() {
-				choicesEl.innerHTML = '';
-				var limit = config.limitChoices;
-				if (limit) {
-						choicesEl.appendChild(createChoice(currentValue, data[currentValue]));
-						var left = Object.keys(data);
-						left = left.slice(0, i).concat(left.slice(i+1));
-						for (var i=0; i<limit - 1; i++) {
-								var j = Math.floor(Math.random() * Object.keys(left).length);
-								var key = left[j];
-								var choiceEl = createChoice(key, data[key]);
-								choicesEl.appendChild(choiceEl);
-								left = left.slice(0, j).concat(left.slice(j+1));
-						}
-				} else {
-					for (var c in data) {
-						var choiceEl = createChoice(c, data[c]);
-						choicesEl.appendChild(choiceEl);
-					}
-				}
 		}
 
 		function answerGiven(value) {
@@ -97,22 +74,6 @@ function doOne(data) {
 				var setStyle = "document.getElementById('status').style.backgroundColor = ''";
 				window.setTimeout(setStyle, 300);
 			}
-		}
-
-		function createChoice(value, key) {
-				var choiceEl = document.createElement("div");
-				choiceEl.className = 'choice';
-				var hint = '<div class="hint">'+key+'</div>';
-				choiceEl.innerHTML = hint + '<span class="option">'+value+'<span>';
-				choiceEl.setAttribute('data-title', key);
-				if (config.tooltipPlugin) {
-					c.setAttribute('title', c.getAttribute('data-title'));
-				}
-choiceEl.addEventListener('click', function() {
-					answerGiven(key);
-				}, false);
-
-				return choiceEl;
 		}
  		
 		// initialise
@@ -145,7 +106,6 @@ plugin: function (pluginName, toggleFunction) {
 ,getAnswer: function() { return currentValue; }
 ,randomiseOptions: randomiseOptions
 ,config: config
-,createChoices: createChoices
 ,answer: answerGiven
 };
 }
