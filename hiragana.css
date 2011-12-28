@@ -1,1 +1,56 @@
+body {
+	margin: 0;
+	font-family: "Helvetica Neue", "Arial", "Helvetica", "Verdana", sans-serif;
+}
 
+#status {
+	background-color: #FFF090;
+	border-bottom: solid black 1px;
+}
+
+.config {
+	font-size: 10pt !important;
+}
+
+#config {
+	display: inline-block;
+	float: right;
+	margin-top: 5px;
+	max-width: 200px;
+}
+
+#config > a {
+	float: right;
+}
+
+#choices {
+	width: 775px;
+	float: left;
+}
+
+.choice {
+	height: 54px;
+	width: 45px;
+	border-top: solid black 1px;
+	border-bottom: solid black 1px;
+	cursor: default;
+	margin: 0;
+	padding: 0;
+}
+
+.option {
+	line-height: 42pt;
+	text-align: center;
+	font-size: 34pt; 
+	text-align: center;
+	margin:0 auto;
+	display: block;
+}
+
+.hint {
+	position: absolute;
+	font-size: 7pt;
+	line-height: 12px;
+	margin-left: 1px;
+	color: #b2b2b2;
+}

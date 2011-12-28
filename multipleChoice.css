@@ -14,11 +14,15 @@ body {
 	border-bottom: solid black 1px;
 }
 
+.config {
+	font-size: 10pt !important;
+}
+
 #config {
 	display: inline-block;
 	float: right;
 	margin-top: 5px;
-	max-width: 220px;
+	max-width: 200px;
 }
 
 #config > a {
@@ -47,23 +51,23 @@ body {
 }
 
 #choices {
-	width: 1175px;
+	width: 775px;
 	float: left;
 }
 
 #choices > div {
 	display: inline-block;
-	height: 90px;
-	width: 75px;
+	height: 54px;
+	width: 45px;
 	border: solid black 1px;
 	margin: 8px;
 	cursor: default;
 }
 
 .option {
-	line-height: 70pt;
+	line-height: 42pt;
 	text-align: center;
-	font-size: 56pt; 
+	font-size: 34pt; 
 	text-align: center;
 	margin:0 auto;
 	display: block;

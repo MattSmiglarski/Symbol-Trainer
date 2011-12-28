@@ -57,7 +57,7 @@ function doOne(data) {
 		function nextQuestion() {
 			var i = Math.floor(Math.random() * Object.keys(data).length);
 			currentValue = Object.keys(data)[i];
-			questionEl.innerHTML = currentValue;
+			questionEl.innerHTML = data[currentValue];
 		}
 
 		function createChoices() {
@@ -83,7 +83,7 @@ function doOne(data) {
 		}
 
 		function answerGiven(value) {
-			if (value === currentValue) {
+			if (value === data[currentValue]) {
 				nextQuestion();
 				createChoices(config.limitChoices);
 				statusEl.style.backgroundColor = 'green';
@@ -97,7 +97,7 @@ function doOne(data) {
 			}
 		}
 
-		function createChoice(key, value) {
+		function createChoice(value, key) {
 				var choiceEl = document.createElement("div");
 				choiceEl.className = 'choice';
 				var hint = '<div class="hint">'+key+'</div>';
@@ -124,7 +124,7 @@ plugin: function (pluginName, toggleFunction) {
 				 var flag = false;
 				 var configEl = document.createElement('a');
 				 configEl.innerHTML = pluginName + offHtml;
-				 configEl.className = 'awesome';
+				 configEl.className = 'awesome config';
 
 				 document.getElementById('config').appendChild(configEl);
 
@@ -141,7 +141,7 @@ plugin: function (pluginName, toggleFunction) {
 				plugins.push(thePlugin);
 				return thePlugin;
 				}
-,getAnswer: function() { return data[currentValue]; }
+,getAnswer: function() { return currentValue; }
 ,randomiseOptions: randomiseOptions
 ,config: config
 ,createChoices: createChoices
