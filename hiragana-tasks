@@ -1,7 +1,13 @@
 Strategies
 ==========
 Method for selecting the next question -- override next question
-Strategy: Introduce n, then no new for n*2, repeat.
+Strategy: Introduce n, then no new for n*2, repeat
+Display the limited choices view for a few goes every so often
+* Two divs -- grid and flow
+* Essentially a second game with its own config (overrides)
+Display the Romanji after 5 seconds
+Record stats for incorrect answers and use to bias the limited choices view
+Inverse Romanji and Hiragana
 
 Other
 =======
@@ -14,3 +20,8 @@ Design strategy for restricting options
 Katakana
 Greek
 Words
+
+Bigger buttons
+Less on the screen
+iPhone/iPad
+
