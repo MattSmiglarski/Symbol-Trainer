@@ -1,22 +1,36 @@
+Take control of my domains
+*AppEngine login
+*Fasthosts
+*GoDaddy
+*Expirations
+*Domain migration
+*Server options
+*CName pointing to appengine
+*Consider transferring ballpointpenthief.co.uk to fasthosts.co.uk
+**Close down GoDaddy account
+*Test mail
+*Deploy script
+**Checkout from git
+**index.html
+**Naked domain
+
 iPhone support
-*Remove title bar
 *Conditional JS to prompt user to install if not full screen.
 *Splash screen
 *On touch start?
 *Test old version
 *sound support
+**Sound spriting
 *App Icon
+**favicon
 **The error sound does not play
 *Japanese chars in title
-*Better use of space -- iphone.css?
-**Config out the way
 *send js errors back to the server?
 *Portrait view
-*JQuery toggle buttons
+*JQuery toggle buttons?
 
 Limited choice, with rounded buttons?
 Round buttons in table?
-Take control of my domains
 Get something up on a server
 Offline caching
 *Speed up initial load?
@@ -28,4 +42,4 @@ Offline caching
 **And then cache correctly
 **Avoid 404s for missing wavs
 **Audio spriting
-
+Jimmy's phone support
