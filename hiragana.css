@@ -12,22 +12,6 @@ table {
 	border-bottom: solid black 1px;
 }
 
-#config {
-	display: inline-block;
-	float: right;
-	margin-top: 5px;
-	max-width: 200px;
-}
-
-#config > a {
-	float: right;
-}
-
-#choices {
-	width: 775px;
-	float: left;
-}
-
 .choice {
 	height: 55px;
 	width: 45px;

@@ -1,0 +1,33 @@
+#status {
+	display: block;
+	min-width: 480px;
+}
+
+#config {
+	display: block;
+	float: left;
+	width: 100%;
+	max-width: 480px;
+}
+
+.choice {
+	height: 20px;
+	width: 29px;
+}
+
+.option {
+	font-size: 12pt;
+}
+
+.config {
+	float: left;
+}
+
+#config > a {
+	float: left;
+}
+
+#choices {
+	width: 100%;
+	min-width: 100%;
+}

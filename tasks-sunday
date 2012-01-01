@@ -1,0 +1,31 @@
+iPhone support
+*Remove title bar
+*Conditional JS to prompt user to install if not full screen.
+*Splash screen
+*On touch start?
+*Test old version
+*sound support
+*App Icon
+**The error sound does not play
+*Japanese chars in title
+*Better use of space -- iphone.css?
+**Config out the way
+*send js errors back to the server?
+*Portrait view
+*JQuery toggle buttons
+
+Limited choice, with rounded buttons?
+Round buttons in table?
+Take control of my domains
+Get something up on a server
+Offline caching
+*Speed up initial load?
+**Cache some stuff
+**GZip
+**What are 206 responses
+**X-Content-Duration
+**Don't load audio every until plugin activated
+**And then cache correctly
+**Avoid 404s for missing wavs
+**Audio spriting
+
