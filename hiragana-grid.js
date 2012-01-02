@@ -178,6 +178,16 @@ game.addHook('question', function() {
 	ideograph && (ideograph.style.display = 'block');
 	questionEl.innerHTML = question;
 });
+game.addHook('correct', function() {
+	document.getElementById('status').style.backgroundColor = 'green';
+	window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
+
+});
+game.addHook('incorrect', function() {
+	document.getElementById('status').style.backgroundColor = 'red';
+	window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
+
+});
 game.start();
 
 var cheapRefreshPlugin = game.plugin('Refresh', function() {document.location = document.location;});

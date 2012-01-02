@@ -1,4 +1,4 @@
-function doOne(data, gameConfig) {
+function doOne(data, config) {
 		if (typeof $ === 'undefined') var $ = function(id) { return document.getElementById(id); }
 
 		if (typeof Object.keys != 'function') {
@@ -12,11 +12,9 @@ function doOne(data, gameConfig) {
 				}
 		}
 
-		var choicesEl = $('choices');
-		var statusEl = $('status');
 		var currentValue;
 		var plugins = new Array();
-		var config = {};
+		var config = config || {};
 		var hooks = {};
 
 		function doCallbacks(hook) {
@@ -47,24 +45,10 @@ function doOne(data, gameConfig) {
 		//timerSupport();
 
 		function nextQuestion() {
-			currentValue = gameConfig.nextValue();
+			currentValue = config.nextValue();
 			doCallbacks('question');
 		}
-
-		function answerGiven(value) {
-			if (value === currentValue) {
-				nextQuestion();
-				statusEl.style.backgroundColor = 'green';
-				window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
-				doCallbacks('correct');
-			} else {
-				doCallbacks('incorrect');
-				statusEl.style.backgroundColor = 'red';
-				var setStyle = "document.getElementById('status').style.backgroundColor = ''";
-				window.setTimeout(setStyle, 300);
-			}
-		}
- 		
+		 		
 		return {
 
 plugin: function (pluginName, toggleFunction) {
@@ -94,7 +78,14 @@ plugin: function (pluginName, toggleFunction) {
 			}
 ,getQuestion: function() { return data[currentValue]; }
 ,getAnswer: function() { return currentValue; }
-,answer: answerGiven
+,answer: function (value) {
+			if (value === currentValue) {
+				nextQuestion();
+				doCallbacks('correct');
+			} else {
+				doCallbacks('incorrect');
+			}
+		}
 ,addHook: function(hook, callback) {
 	if (!hooks[hook]) {
 		hooks[hook] = new Array();
