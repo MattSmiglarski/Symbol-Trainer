@@ -10,13 +10,23 @@
 	max-width: 480px;
 }
 
+#choices {
+	bottom: 10px;
+	position: fixed;
+}
+
 .choice {
-	height: 20px;
-	width: 29px;
+	height: 40px;
+	width: 60px;
+	text-align: center;
 }
 
 .option {
-	font-size: 12pt;
+	font-size: 24pt;
+}
+
+.hint {
+	line-height: 10px;
 }
 
 #choices {
