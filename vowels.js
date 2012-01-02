@@ -1,6 +1,10 @@
-var vowelGame = (function () {
+var allOptions = Object.keys(hiragana);
+var vowelGame = (function (options) {
+
 	return {
-		nextValue: function() { return '&#x3042;'; },
+		nextValue: function() {
+			return options[Math.floor(Math.random() * options.length)];
+		},
 
 		createChoiceElement: createChoice,
 
@@ -28,5 +32,6 @@ var vowelGame = (function () {
 			choicesEl.insertBefore(x, choicesEl.children[Math.floor(Math.random() * (choicesEl.children.length+1))]);
 		},
 			};
-}());
+}(allOptions));
+
 

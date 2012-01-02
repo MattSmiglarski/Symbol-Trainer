@@ -19,14 +19,6 @@
 	font-size: 12pt;
 }
 
-.config {
-	float: left;
-}
-
-#config > a {
-	float: left;
-}
-
 #choices {
 	width: 100%;
 	min-width: 100%;

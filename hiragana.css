@@ -15,11 +15,14 @@ table {
 .choice {
 	height: 55px;
 	width: 45px;
-	border-top: solid black 1px;
 	cursor: default;
 	margin: 0;
 	padding: 0;
 	display: inline-block;
+}
+
+table .choice {
+	border-top: solid black 1px;
 }
 
 .option {
