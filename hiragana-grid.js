@@ -169,6 +169,16 @@ for (i = 0; i < tableValues.length; i+=1) {
 game = doOne(hiragana, {
 	nextValue: strategy
 });
+game.addHook('question', function() {
+	var question = game.getQuestion();
+	var answer = game.getAnswer();
+
+	var questionEl= document.getElementById('question');
+	var ideograph = document.getElementById(answer);
+	ideograph && (ideograph.style.display = 'block');
+	questionEl.innerHTML = question;
+});
+game.start();
 
 var cheapRefreshPlugin = game.plugin('Refresh', function() {document.location = document.location;});
 var romanjiPlugin = game.plugin('Romanji', function(flag) {

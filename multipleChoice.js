@@ -12,38 +12,30 @@ function doOne(data, gameConfig) {
 				}
 		}
 
-		var onHtml = ' <span style="color: blue;">On</span>/Off';
-		var offHtml = ' On/<span style="color: blue;">Off</span>';
-		var questionEl= $('question');
 		var choicesEl = $('choices');
 		var statusEl = $('status');
 		var currentValue;
 		var plugins = new Array();
 		var config = {};
+		var hooks = {};
 
 		function doCallbacks(hook) {
-			for (var i=0; i<plugins.length; i++) {
-				var plugin = plugins[i];
+			var i, callback, plugin;
+
+			if (hooks[hook]) {
+				for (i=0; i<hooks[hook].length; i+=1) {
+					hooks[hook][i]();
+				}
+			}
+
+			for (i=0; i<plugins.length; i+=1) {
+				plugin = plugins[i];
 				if (plugin.isEnabled()) {
-					var callback = plugin.getCallback(hook);
+					callback = plugin.getCallback(hook);
 					if (typeof callback === 'function') {
 						callback();
 					}
 				}
-			}
-		}
-		function randomiseOptions() {
-			var choicesEl = document.getElementById('choices');
-			var choices = new Array();
-			while (choicesEl.children.length > 0) {
-				var element = choicesEl.children[0];
-				choicesEl.removeChild(element);
-				choices.push(element);
-			}
-			while (choices.length > 0) {
-				var index = Math.floor(Math.random() * choices.length);
-				choicesEl.appendChild(choices[index]);
-				choices = choices.slice(0, index).concat(choices.slice(index + 1));
 			}
 		}
 
@@ -52,14 +44,11 @@ function doOne(data, gameConfig) {
 			doCallbacks('timer');
 			timer = setTimeout("timerSupport()", 1000);
 		};
-		timerSupport();
+		//timerSupport();
 
 		function nextQuestion() {
-			var ideograph;
 			currentValue = gameConfig.nextValue();
-			questionEl.innerHTML = data[currentValue];
-			ideograph = document.getElementById(currentValue);
-			ideograph && (ideograph.style.display = 'block');
+			doCallbacks('question');
 		}
 
 		function answerGiven(value) {
@@ -76,21 +65,21 @@ function doOne(data, gameConfig) {
 			}
 		}
  		
-		// initialise
-		nextQuestion();
-
 		return {
 
 plugin: function (pluginName, toggleFunction) {
-				 var hooks = {};
-				 var flag = false;
-				 var configEl = document.createElement('a');
-				 configEl.innerHTML = pluginName + offHtml;
-				 configEl.className = 'awesome config';
+				var hooks = {};
+				var flag = false;
+				var configEl = document.createElement('a');
+				var onHtml = ' <span style="color: blue;">On</span>/Off';
+				var offHtml = ' On/<span style="color: blue;">Off</span>';
 
-				 document.getElementById('config').appendChild(configEl);
+				configEl.innerHTML = pluginName + offHtml;
+				configEl.className = 'awesome config';
 
-				 configEl.addEventListener('click', function() {
+				document.getElementById('config').appendChild(configEl);
+
+				configEl.addEventListener('click', function() {
 						 flag = !flag;
 						 configEl.innerHTML = pluginName + (flag? onHtml : offHtml);
 						 toggleFunction(flag);
@@ -102,10 +91,16 @@ plugin: function (pluginName, toggleFunction) {
 				};
 				plugins.push(thePlugin);
 				return thePlugin;
-				}
+			}
+,getQuestion: function() { return data[currentValue]; }
 ,getAnswer: function() { return currentValue; }
-,randomiseOptions: randomiseOptions
-,config: config
 ,answer: answerGiven
+,addHook: function(hook, callback) {
+	if (!hooks[hook]) {
+		hooks[hook] = new Array();
+	}
+	hooks[hook].push(callback);
+}
+,start: function() { nextQuestion(); }
 };
 }
