@@ -19,14 +19,8 @@ body {
 }
 
 #config {
-	display: inline-block;
-	float: right;
+	display: block;
 	margin-top: 5px;
-	max-width: 170px;
-}
-
-#config > a {
-	float: right;
 }
 
 .awesome {

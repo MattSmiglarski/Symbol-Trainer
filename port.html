@@ -14,63 +14,9 @@
 var game;
 var config = {};
 
-function createChoice(key, value) {
-				var choiceEl = document.createElement("div");
-				choiceEl.className = 'choice';
-				var hint = '<div class="hint">'+value+'</div>';
-				choiceEl.innerHTML = hint + '<span class="option">'+key+'<span>';
-				choiceEl.setAttribute('data-title', value);
-				if (config.tooltipPlugin) {
-					c.setAttribute('title', c.getAttribute('data-title'));
-				}
-choiceEl.addEventListener('click', function() {
-					game.answer(key);
-				}, false);
-
-				return choiceEl;
-		}
-
-function createChoices() {
-	var choicesEl = document.getElementById('choices');
-	var limit = 5;
-	var data = hiragana; 
-	var currentValue = game.getAnswer();
-	var left = Object.keys(data);
-	var j, key, choiceEl;
-
-	choicesEl.innerHTML = '';
-	left = left.slice(0, i).concat(left.slice(i+1));
-	for (var i=0; i<limit - 1; i++) {
-			j = Math.floor(Math.random() * Object.keys(left).length);
-			key = left[j];
-			choiceEl = createChoice(key, data[key]);
-			choicesEl.appendChild(choiceEl);
-			left = left.slice(0, j).concat(left.slice(j+1));
-	}
-	var x = createChoice(currentValue, data[currentValue]);
-	choicesEl.insertBefore(x, choicesEl.children[Math.floor(Math.random() * (choicesEl.children.length+1))]);
-}
-
-var strategy = (function() {
-	var count = 1;
-	var previousQs = {};
-
-	return function() {
-		var data;
-		var i, q;
-
-		data = count%3 == 0? previousQs : hiragana;
-		i = Math.floor(Math.random() * Object.keys(data).length);
-		var q = Object.keys(data)[i];
-		previousQs[q] = 1;
-		count += 1;
-		return q;
-	}
-}());
-
 window.onload = function() {
 game = doOne(hiragana, {
-	nextValue: strategy,
+	nextValue: strategy
 });
 game.addHook('question', function() {
 	createChoices();

@@ -42,7 +42,7 @@ var G = (function () {
 				var cellEl = el.getElementsByTagName('td')[col];
 
 				function setValue(value) {
-					(config.setValue || defaults.setValue).call(cellEl, value);
+					config.setValue(cellEl, value);
 				}
 
 				return {

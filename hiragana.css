@@ -19,6 +19,7 @@ table {
 	cursor: default;
 	margin: 0;
 	padding: 0;
+	display: inline-block;
 }
 
 .option {
@@ -27,7 +28,6 @@ table {
 	font-size: 34pt; 
 	text-align: center;
 	margin:0 auto;
-	display: none;
 }
 
 .hint {
