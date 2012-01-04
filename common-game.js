@@ -32,6 +32,7 @@ game.addHook('correct', function() {
 });
 game.addHook('incorrect', function() {
 	document.getElementById('status').style.backgroundColor = 'red';
+	document.getElementById('status').children[0].style.backgroundColor = 'red';
 	window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
 
 });

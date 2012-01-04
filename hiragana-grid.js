@@ -154,7 +154,7 @@ target: document.getElementById('grid'),
 		if (!game.restrictCol || col === game.restrictCol) {
 			for (row=0; row<5; row+=1) {
 				if (!game.restrictRow || row === game.restrictRow) {
-					grid.setValue(row, col, tableValues[col][row]);
+					grid.setValue(row, col, tableValues[15-col][row]);
 				}
 			}
 		}

@@ -43,11 +43,17 @@ var G = (function () {
 
 				function setValue(value) {
 					config.setValue(cellEl, value);
+					cellEl.setAttribute('data-value', value);
+				}
+
+				function getValue() {
+					return cellEl.getAttribute('data-value');
 				}
 
 				return {
 					el: cellEl,
-					setValue: setValue
+					setValue: setValue,
+					getValue: getValue
 				};
 			}
 
@@ -56,6 +62,9 @@ var G = (function () {
 				cellAt: cellAt,
 				setValue: function(col, value) {
 					cellAt(col).setValue(value);
+				},
+				getValue: function(col) {
+					return cellAt(col).getValue();
 				}
 			};
 		}
@@ -68,8 +77,17 @@ var G = (function () {
 			},
 			setValue: function(row, col, value) {
 				return rowAt(row).setValue(col, value);
+			},
+			getValue: function(row, col) {
+				return rowAt(row).cellAt(col).getValue();
+			},
+			values: function() {
+				var i,j;
+// implement this, and use to get available values for next question.
+// Add value, create choices, select answer.
 			}
 		};
+	
 	}
 
     return {
