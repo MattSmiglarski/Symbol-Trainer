@@ -1,0 +1,9 @@
+Version of grid limited to a selected row/column
+Keep grid the same size
+Find best place to configure row/col restriction
+Do an animation:
+	Show the grid
+	Fade out the unselected row/columns
+	Move selected rows/columns into a flow panel
+	Start the multichoice game
+

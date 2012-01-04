@@ -149,6 +149,8 @@ soundPlugin.setCallback('correct', (function() {
 }()));
 
 
+game.restrictRow = config.restrictRow;
+game.restrictCol = config.restrictCol;
 if (config.init) config.init(game);
 game.start();
 return game;
