@@ -17,8 +17,11 @@ var game = doOne(hiragana, {
 });
 
 game.addHook('question', function() {
-	var questionEl = document.getElementById('question');
+	var statusBar = document.getElementById('status');
+	var questionEl = document.createElement('div');
+	questionEl.className = 'awesome question';
 	questionEl.innerHTML = game.getQuestion();
+	statusBar.insertBefore(questionEl, statusBar.children[0]);
 	config.questionsHook(game);
 });
 
