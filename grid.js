@@ -12,15 +12,13 @@ var G = (function () {
 		var table = document.createElement("table"), i, j, row, cell;
 		var col, colGroup;
 		var config = config || {};
-		table.setAttribute('cellspacing', 0);
+		table.setAttribute('cellspacing', '5px');
 		table.setAttribute('cellpadding', 0);
-		table.setAttribute('rules', 'groups');
 
 		if (config.columnSpans) {
 			for (i=0; i<config.columnSpans.length; i++) {
 				colGroup = document.createElement('colgroup');
 				colGroup.setAttribute('span', config.columnSpans[i]);
-				colGroup.setAttribute('style', 'border: solid black 1px !important;');
 				table.appendChild(colGroup);
 			}
 		}

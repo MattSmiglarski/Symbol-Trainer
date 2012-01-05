@@ -1,12 +1,68 @@
 function createChoice(game, key, value) {
 	var choiceEl = document.createElement("div");
+	var progressWrapper = document.createElement("div");
+	var progress = document.createElement("div");
+	var hint = document.createElement("div");
+	var ideograph = document.createElement("span");
+
+	progressWrapper.className = 'progressWrapper';
+	progress.className = 'progress';
+	progress.style.width = 0;
+	ideograph.className = 'option';
+	ideograph.innerHTML = key;
+	hint.className = 'hint';
+	hint.innerHTML = value || "";
+
+	if (!key) return choiceEl;
+
+	progress.appendChild(hint);
+	progressWrapper.appendChild(progress);
+	choiceEl.appendChild(progressWrapper);
+	choiceEl.appendChild(ideograph);
+
 	choiceEl.className = 'choice';
-	var hint = '<div class="hint">'+value+'</div>';
-	choiceEl.innerHTML = hint + '<span class="option">'+key+'<span>';
-	choiceEl.setAttribute('data-title', value);
+	choiceEl.setAttribute('data-key', key);
+	choiceEl.setAttribute('data-value', value);
+	choiceEl.setAttribute('data-progress', 0);
 	choiceEl.addEventListener('click', function() {
-		game.answer(key);
+		game.answer(key, choiceEl.increment, choiceEl.decrement);
 	}, false);
+
+	function updateProgressStyle() {
+		var margin = 2;
+		var wrapperWidth = 45;
+		var availableWidth = wrapperWidth - 2*margin;
+		var divisions = 5;
+		var unitWidth = availableWidth / divisions;
+		var progressWidth = unitWidth * choiceEl.progress();
+
+		if (progressWidth < availableWidth) {
+			progress.style.width = progressWidth + 'px';
+		} else {
+			progressWrapper.style.backgroundColor = 'green';
+			progressWrapper.style.borderRadius = '6px 6px 0 0';
+		}
+	}
+
+	choiceEl.increment = function() {
+		var x = Number(choiceEl.getAttribute('data-progress'));
+		choiceEl.setAttribute('data-progress', x+1);
+		updateProgressStyle();
+	}
+	choiceEl.decrement = function() {
+		var x = Number(choiceEl.getAttribute('data-progress'));
+		var newValue;
+		if (x > 0) {
+			newValue=x-1;
+		} else {
+			newValue=0;
+		}
+		choiceEl.setAttribute('data-progress', newValue);
+		updateProgressStyle();
+	}
+	choiceEl.progress = function() {
+		return Number(choiceEl.getAttribute('data-progress'));
+	}
 
 	return choiceEl;
 }

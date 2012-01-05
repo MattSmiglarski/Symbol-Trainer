@@ -114,31 +114,7 @@ var anythingStrategy = (function() {
 }());
 
 function createGridChoice(game, target, value) {
-	var choiceEl = document.createElement("div");
-	var hint, ideograph;
-
-	if (value && !document.getElementById('value')) {
-		hint = document.createElement('div');
-		hint.className = "hint";
-		hint.innerHTML = hiragana[value];
-
-		ideograph = document.createElement('div');
-		ideograph.className = 'option';
-		ideograph.innerHTML = value;
-		ideograph.id = value;
-		
-		choiceEl.appendChild(hint);
-		choiceEl.appendChild(ideograph);
-		choiceEl.setAttribute('data-title', hiragana[value]);
-	}
-	if (value != null){
-		choiceEl.className = 'choice';
-	}
-	target.appendChild(choiceEl);
-	choiceEl.addEventListener('click', function() {
-		game.answer(value);
-	});
-	return choiceEl;
+	target.appendChild(createChoice(game, value, hiragana[value]));
 }
 
 function createGrid(game) {

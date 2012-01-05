@@ -78,12 +78,14 @@ plugin: function (pluginName, toggleFunction) {
 			}
 ,getQuestion: function() { return data[currentValue]; }
 ,getAnswer: function() { return currentValue; }
-,answer: function (value) {
+,answer: function (value, onCorrect, onIncorrect) {
 			if (value === currentValue) {
 				nextQuestion();
 				doCallbacks('correct');
+				if (onCorrect) onCorrect();
 			} else {
 				doCallbacks('incorrect');
+				if (onIncorrect) onIncorrect();
 			}
 		}
 ,addHook: function(hook, callback) {
