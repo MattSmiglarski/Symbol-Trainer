@@ -105,7 +105,7 @@ var romanjiPlugin = game.plugin('Romanji', function(flag) {
 var soundPlugin = game.plugin('Sound', function(flag) {});
 soundPlugin.setCallback('incorrect', (function() {
 	var incorrectAudio = new Audio();
-	incorrectAudio.src = 'dialog-error.ogg';
+	incorrectAudio.src = 'audio/dialog-error.ogg';
 	incorrectAudio.load();
 
 	return function() {

@@ -25,9 +25,3 @@ Flash column of grid green 2/3 times
 Multichoice with AIUEO.
 Repeat for row 1.
 Column 2,3,4,5 etc....
-
-Getting There
-=============
-Multichoice specify options config
-	- getNextQuestion from the questionsHook (line 79 common-game.js)	
-	
