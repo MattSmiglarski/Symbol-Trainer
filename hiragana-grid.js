@@ -162,38 +162,67 @@ var gridGame= (function () {
 	var x = createChoice(game, currentValue, data[currentValue]);
 	choicesEl.insertBefore(x, choicesEl.children[Math.floor(Math.random() * (choicesEl.children.length+1))]);
 	}
+
+	function questionsHook(game) {
+		var config = nextQuestionConfig();
+		document.getElementById('grid').style.display = 'none';
+		document.getElementById('choices').style.display = 'none';
+		
+		if (config.gridConfig) {
+			document.getElementById('grid').style.display = 'block';
+		}
+
+		if (config.multiChoiceConfig) {
+			createMultiChoices(game);
+			document.getElementById('choices').style.display = 'block';
+		}
+	}
+
+	var nextValue = (function() {
+		var count = 1;
+		var previousQs = {};
+
+		return function() {
+			var data;
+			var i, q;
+
+			data = count%3 == 0? previousQs : hiragana;
+			i = Math.floor(Math.random() * Object.keys(data).length);
+			var q = Object.keys(data)[i];
+			previousQs[q] = 1;
+			count += 1;
+			return q;
+		}
+	}());
+
+	function nextQuestionConfig() {
+		var gridConfig;
+		var multiChoiceConfig;
+
+		if (mode == 'grid') {
+			gridConfig = {
+				
+			}
+			mode = 'multichoice';
+		} else {
+			multiChoiceConfig = {
+				options: 5,
+			}
+			mode = 'grid';
+		}
+
+		return {
+			gridConfig: gridConfig,
+			multiChoiceConfig: multiChoiceConfig
+		}
+	}
+
 	return {
-nextValue: (function() {
-    var count = 1;
-    var previousQs = {};
-
-    return function() {
-    var data;
-    var i, q;
-
-    data = count%3 == 0? previousQs : hiragana;
-    i = Math.floor(Math.random() * Object.keys(data).length);
-    var q = Object.keys(data)[i];
-    previousQs[q] = 1;
-    count += 1;
-    return q;
-    }
-    }()),
-createChoiceElement: function(game, key, value) {},
-	     questionsHook: function(game) {
-		     if (mode === 'grid') {
-			     mode = 'multichoice';
-			     createMultiChoices(game);
-			     document.getElementById('choices').style.display = 'block';
-			     document.getElementById('grid').style.display = 'none';
-		     } else {
-			     mode = 'grid';
-			     document.getElementById('choices').style.display = 'none';
-			     document.getElementById('grid').style.display = 'block';
-		     }
-	     },
-	     //restrictCol: 2,
-init: createGrid
+nextValue: nextValue,
+		   createChoiceElement: function(game, key, value) {},
+		   questionsHook: questionsHook,
+		   //restrictCol: 2,
+		   init: createGrid
 	};
 }());
 

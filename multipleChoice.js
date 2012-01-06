@@ -80,9 +80,9 @@ plugin: function (pluginName, toggleFunction) {
 ,getAnswer: function() { return currentValue; }
 ,answer: function (value, onCorrect, onIncorrect) {
 			if (value === currentValue) {
-				nextQuestion();
 				doCallbacks('correct');
 				if (onCorrect) onCorrect();
+				nextQuestion();
 			} else {
 				doCallbacks('incorrect');
 				if (onIncorrect) onIncorrect();
