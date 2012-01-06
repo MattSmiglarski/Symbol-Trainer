@@ -26,3 +26,9 @@ Multichoice with AIUEO.
 Repeat for row 1.
 Column 2,3,4,5 etc....
 
+Getting There
+=============
+Make config object which decides whether to show the grid or the choices, then flip between the two in a neverending while loop.
+Multichoice number of elements config
+Multichoice specify question config
+Multichoice specify options config

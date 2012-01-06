@@ -138,27 +138,62 @@ target: document.getElementById('grid'),
 }
 
 var gridGame= (function () {
-		return {
+	var mode = 'multichoice';
+	function createMultiChoices(game) {
+	var answer = game.getAnswer();
+	var ideograph = document.getElementById(answer);
+	var choicesEl = document.getElementById('choices');
+	var limit = 15;
+	var data = hiragana; 
+	var currentValue = game.getAnswer();
+	var left = Object.keys(data);
+	var j, key, choiceEl;
+
+	ideograph && (ideograph.style.display = 'block');
+	choicesEl.innerHTML = '';
+	left = left.slice(0, i).concat(left.slice(i+1));
+	for (var i=0; i<limit - 1; i++) {
+	j = Math.floor(Math.random() * Object.keys(left).length);
+	key = left[j];
+	choiceEl = createChoice(game, key, data[key]);
+	choicesEl.appendChild(choiceEl);
+	left = left.slice(0, j).concat(left.slice(j+1));
+	}
+	var x = createChoice(game, currentValue, data[currentValue]);
+	choicesEl.insertBefore(x, choicesEl.children[Math.floor(Math.random() * (choicesEl.children.length+1))]);
+	}
+	return {
 nextValue: (function() {
-	    var count = 1;
-	    var previousQs = {};
+    var count = 1;
+    var previousQs = {};
 
-	    return function() {
-	    var data;
-	    var i, q;
+    return function() {
+    var data;
+    var i, q;
 
-	    data = count%3 == 0? previousQs : hiragana;
-	    i = Math.floor(Math.random() * Object.keys(data).length);
-	    var q = Object.keys(data)[i];
-	    previousQs[q] = 1;
-	    count += 1;
-	    return q;
-	    }
-	    }()),
+    data = count%3 == 0? previousQs : hiragana;
+    i = Math.floor(Math.random() * Object.keys(data).length);
+    var q = Object.keys(data)[i];
+    previousQs[q] = 1;
+    count += 1;
+    return q;
+    }
+    }()),
 createChoiceElement: function(game, key, value) {},
-questionsHook: function() {},
-//restrictCol: 2,
+	     questionsHook: function(game) {
+		     if (mode === 'grid') {
+			     mode = 'multichoice';
+			     createMultiChoices(game);
+			     document.getElementById('choices').style.display = 'block';
+			     document.getElementById('grid').style.display = 'none';
+		     } else {
+			     mode = 'grid';
+			     document.getElementById('choices').style.display = 'none';
+			     document.getElementById('grid').style.display = 'block';
+		     }
+	     },
+	     //restrictCol: 2,
 init: createGrid
-		};
+	};
 }());
 

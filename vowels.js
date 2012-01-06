@@ -1,14 +1,6 @@
 var allOptions = Object.keys(hiragana);
 var vowelGame = (function (options) {
-
-	return {
-		nextValue: function() {
-			return options[Math.floor(Math.random() * options.length)];
-		},
-
-		createChoiceElement: createChoice,
-
-		questionsHook: function(game) {
+	function createMultiChoices(game) {
 			var answer = game.getAnswer();
 			var ideograph = document.getElementById(answer);
 			var choicesEl = document.getElementById('choices');
@@ -30,6 +22,30 @@ var vowelGame = (function (options) {
 			}
 			var x = createChoice(game, currentValue, data[currentValue]);
 			choicesEl.insertBefore(x, choicesEl.children[Math.floor(Math.random() * (choicesEl.children.length+1))]);
+		}
+	
+	var mode = 'grid';
+
+	return {
+		nextValue: function() {
+			return options[Math.floor(Math.random() * options.length)];
+		},
+
+		createChoiceElement: createChoice,
+
+		questionsHook: function(game) {
+			if (mode === 'grid') {
+				mode = 'multichoice';
+				createMultiChoices(game);
+				document.getElementById('choices').style.display = 'block';
+				document.getElementById('grid').style.display = 'none';
+				console.log(document.getElementById('grid').style.display);
+			} else {
+				mode = 'grid';
+				document.getElementById('choices').style.display = 'none';
+				document.getElementById('grid').style.display = 'block';
+			}
+
 		},
 			};
 }(allOptions));
