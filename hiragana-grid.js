@@ -1,3 +1,4 @@
+var h = Object.keys(hiragana);
 var tableValues = [
 ['&#x3042;'
 ,'&#x3044;'
@@ -113,8 +114,8 @@ var anythingStrategy = (function() {
 	}
 }());
 
-function createGridChoice(game, target, value) {
-	target.appendChild(createChoice(game, value, hiragana[value]));
+function createGridChoice(answerCallback, target, value) {
+	target.appendChild(createChoice(answerCallback, value, hiragana[value]));
 }
 
 function createGrid(game) {
@@ -139,32 +140,33 @@ target: document.getElementById('grid'),
 
 var gridGame= (function () {
 	var mode = 'multichoice';
-	function createMultiChoices(game) {
-	var answer = game.getAnswer();
-	var ideograph = document.getElementById(answer);
-	var choicesEl = document.getElementById('choices');
-	var limit = 15;
+	var options = [h[0],h[1],h[2],h[3],h[4]];
 	var data = hiragana; 
-	var currentValue = game.getAnswer();
-	var left = Object.keys(data);
+	var currentValue;
+
+	function createMultiChoices(answerCallback, config) {
+	currentValue = options[Math.floor(Math.random() * options.length)];
+	var ideograph = document.getElementById(currentValue);
+	var choicesEl = document.getElementById('choices');
+	var left = options;
+	var i=0;
 	var j, key, choiceEl;
+	var limit = options.length;
 
 	ideograph && (ideograph.style.display = 'block');
 	choicesEl.innerHTML = '';
-	left = left.slice(0, i).concat(left.slice(i+1));
-	for (var i=0; i<limit - 1; i++) {
+	for (i=0; i<limit; i+=1) {
 	j = Math.floor(Math.random() * Object.keys(left).length);
 	key = left[j];
-	choiceEl = createChoice(game, key, data[key]);
+	choiceEl = createChoice(answerCallback, key, data[key]);
 	choicesEl.appendChild(choiceEl);
 	left = left.slice(0, j).concat(left.slice(j+1));
 	}
-	var x = createChoice(game, currentValue, data[currentValue]);
-	choicesEl.insertBefore(x, choicesEl.children[Math.floor(Math.random() * (choicesEl.children.length+1))]);
 	}
 
-	function questionsHook(game) {
+	function questionsHook(answerCallback) {
 		var config = nextQuestionConfig();
+
 		document.getElementById('grid').style.display = 'none';
 		document.getElementById('choices').style.display = 'none';
 		
@@ -173,9 +175,11 @@ var gridGame= (function () {
 		}
 
 		if (config.multiChoiceConfig) {
-			createMultiChoices(game);
+			createMultiChoices(answerCallback, {
+			});
 			document.getElementById('choices').style.display = 'block';
 		}
+		return currentValue;
 	}
 
 	var nextValue = (function() {
@@ -206,9 +210,9 @@ var gridGame= (function () {
 			mode = 'multichoice';
 		} else {
 			multiChoiceConfig = {
-				options: 5,
+				options: 5
 			}
-			mode = 'grid';
+		//	mode = 'grid';
 		}
 
 		return {
@@ -218,7 +222,6 @@ var gridGame= (function () {
 	}
 
 	return {
-nextValue: nextValue,
 		   createChoiceElement: function(game, key, value) {},
 		   questionsHook: questionsHook,
 		   //restrictCol: 2,

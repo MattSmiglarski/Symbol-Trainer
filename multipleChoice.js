@@ -45,8 +45,19 @@ function doOne(data, config) {
 		//timerSupport();
 
 		function nextQuestion() {
-			currentValue = config.nextValue();
+			currentValue = config.questionsHook(answer);
 			doCallbacks('question');
+		};
+
+		function answer(value, onCorrect, onIncorrect) {
+			if (value === currentValue) {
+				doCallbacks('correct');
+				if (onCorrect) onCorrect();
+				nextQuestion();
+			} else {
+				doCallbacks('incorrect');
+				if (onIncorrect) onIncorrect();
+			}
 		}
 		 		
 		return {
@@ -78,16 +89,7 @@ plugin: function (pluginName, toggleFunction) {
 			}
 ,getQuestion: function() { return data[currentValue]; }
 ,getAnswer: function() { return currentValue; }
-,answer: function (value, onCorrect, onIncorrect) {
-			if (value === currentValue) {
-				doCallbacks('correct');
-				if (onCorrect) onCorrect();
-				nextQuestion();
-			} else {
-				doCallbacks('incorrect');
-				if (onIncorrect) onIncorrect();
-			}
-		}
+,answer: answer
 ,addHook: function(hook, callback) {
 	if (!hooks[hook]) {
 		hooks[hook] = new Array();

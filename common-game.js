@@ -1,4 +1,4 @@
-function createChoice(game, key, value) {
+function createChoice(answerCallback, key, value) {
 	var choiceEl = document.createElement("div");
 	var progressWrapper = document.createElement("div");
 	var progress = document.createElement("div");
@@ -25,7 +25,7 @@ function createChoice(game, key, value) {
 	choiceEl.setAttribute('data-value', value);
 	choiceEl.setAttribute('data-progress', 0);
 	choiceEl.addEventListener('click', function() {
-		game.answer(key, choiceEl.increment, choiceEl.decrement);
+		answerCallback(key, choiceEl.increment, choiceEl.decrement);
 	}, false);
 
 	function updateProgressStyle() {
@@ -69,7 +69,7 @@ function createChoice(game, key, value) {
 
 function createGame(config) {
 var game = doOne(hiragana, {
-	nextValue: config.nextValue
+	questionsHook: config.questionsHook
 });
 
 game.addHook('question', function() {
@@ -78,7 +78,6 @@ game.addHook('question', function() {
 	questionEl.className = 'awesome question';
 	questionEl.innerHTML = game.getQuestion();
 	statusBar.insertBefore(questionEl, statusBar.children[0]);
-	config.questionsHook(game);
 });
 
 game.addHook('correct', function() {
