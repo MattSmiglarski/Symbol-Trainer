@@ -39,12 +39,12 @@ function doOne(data, config) {
 		function answer(value, onCorrect, onIncorrect) {
 			if (value === currentValue) {
 				doCallbacks('correct');
-				if (onCorrect) onCorrect();
-				nextQuestion();
+				if (onCorrect) onCorrect(currentValue);
 			} else {
 				doCallbacks('incorrect');
-				if (onIncorrect) onIncorrect();
+				if (onIncorrect) onIncorrect(currentValue);
 			}
+			nextQuestion();
 		}
 		 		
 		return {
@@ -60,14 +60,25 @@ plugin: function (pluginName, toggleFunction) {
 				configEl.className = 'awesome config';
 
 				document.getElementById('config').appendChild(configEl);
-
-				configEl.addEventListener('click', function() {
-						 flag = !flag;
-						 configEl.innerHTML = pluginName + (flag? onHtml : offHtml);
-						 toggleFunction(flag);
-				}, false);
+				function enable() {
+					flag = true;
+					configEl.innerHTML = pluginName + onHtml;
+					toggleFunction(true);
+				}
+				function disable() {
+					flag = false;
+					configEl.innerHTML = pluginName + offHtml;
+					toggleFunction(false);
+				}
+				function toggle() {
+					if (flag) disable(); else enable();
+				}
+				configEl.addEventListener('click', toggle, false);
 				var thePlugin = {
 					isEnabled: function() { return flag; }
+					,toggle: toggle
+					,enable: enable
+					,disable: disable
 					,getCallback: function(hook) { return hooks[hook]; }
 					,setCallback: function(hook, callback) { hooks[hook] = callback; }
 				};

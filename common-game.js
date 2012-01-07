@@ -2,6 +2,7 @@ var h = Object.keys(hiragana);
 var grid;
 var choiceElements = {};
 var rightToLeft = true; // Put in a config object or something
+var mode = 'grid';
 
 function createChoice(answerCallback, key, value) {
 		var choiceEl = document.createElement("div");
@@ -30,8 +31,14 @@ function createChoice(answerCallback, key, value) {
 		choiceEl.setAttribute('data-value', value);
 		choiceEl.setAttribute('data-progress', 0);
 		choiceEl.addEventListener('click', function() {
-						answerCallback(key, choiceEl.increment, choiceEl.decrement);
-						}, false);
+			answerCallback(key,
+				choiceEl.increment,
+				function (currentValue) {
+					choiceElements[currentValue].decrement();
+					choiceEl.decrement();
+					mode = 'grid';
+				});
+		}, false);
 
 		function updateProgressStyle() {
 				var margin = 2;
@@ -75,36 +82,32 @@ function createChoice(answerCallback, key, value) {
 function createGame(config) {
 		var game = doOne(hiragana, config);
 
-		game.addHook('question', function() {
-						var statusBar = document.getElementById('status');
-						var questionEl = document.createElement('div');
-						questionEl.className = 'awesome question';
-						questionEl.innerHTML = game.getQuestion();
-						statusBar.insertBefore(questionEl, statusBar.children[0]);
-						});
-
+		
 		game.addHook('correct', function() {
 						document.getElementById('status').style.backgroundColor = 'green';
+						document.getElementById('questions').children[0].style.backgroundColor = 'green';
 						window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
-
+						mode = 'multichoice';
+						romajiPlugin.disable();
 						});
 		game.addHook('incorrect', function() {
 						document.getElementById('status').style.backgroundColor = 'red';
-						document.getElementById('status').children[0].style.backgroundColor = 'red';
+						document.getElementById('questions').children[0].style.backgroundColor = 'red';
 						window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
-
+						mode = 'grid';
+						romajiPlugin.enable();
 						});
 
 		var cheapRefreshPlugin = game.plugin('Refresh', function() {
 						document.location = document.location;
 						});
-		var romanjiPlugin = game.plugin('Romanji', function(flag) {
+		var romajiPlugin = game.plugin('Rōmaji', function(flag) {
 						var hints = document.getElementsByClassName('hint');
 						for (var i=0; i<hints.length; i++) {
 						hints[i].style.display = (flag? 'block' : 'none');
 						}
 						});
-
+		romajiPlugin.enable();
 		game.restrictRow = config.restrictRow;
 		game.restrictCol = config.restrictCol;
 		if (config.init) config.init(game);
@@ -113,7 +116,6 @@ function createGame(config) {
 }
 
 var gridGame = (function () {
-				var mode = 'grid';
 				var options = [h[0],h[1],h[2],h[3],h[4]];
 				var data = hiragana; 
 				var currentValue;
@@ -137,18 +139,32 @@ var gridGame = (function () {
 				}
 				}
 
+				function createQuestionWidget(value) {
+					var questionEl = document.createElement('div');
+					questionEl.className = 'awesome question';
+					questionEl.innerHTML = value;
+					return questionEl;
+				}
+
+				function nextQuestion() {
+					var questionEl;
+					var statusBar = document.getElementById('questions');
+					currentValue = options[Math.floor(Math.random() * options.length)]
+ 					questionEl = createQuestionWidget(data[currentValue]);
+					statusBar.insertBefore(questionEl, statusBar.children[0]);
+				}
+
 				function questionsHook(answerCallback) {
 						var config = {};
 						var i,j,ideographWidget;
 						grid.clear();
-						currentValue = options[Math.floor(Math.random() * options.length)]
+						nextQuestion();
 						config.data = tableValues;
 						if (mode == 'grid') {
 								config.gridConfig = {};
 								mode = 'multichoice';
 						} else {
 								config.multiChoiceConfig = {}
-								mode = 'grid';
 						}
 
 						document.getElementById('grid').style.display = 'none';
@@ -177,7 +193,6 @@ var gridGame = (function () {
 				}
 
 				return {
-createChoiceElement: function(game, key, value) {},
 							 questionsHook: questionsHook,
 							 //restrictCol: 2,
 							 init: function init(game) {

@@ -36,6 +36,10 @@ body {
 
 }
 
+#choices > .choice {
+	margin: 10px;
+}
+
 .option {
 	line-height: 185%;
 	text-align: right;

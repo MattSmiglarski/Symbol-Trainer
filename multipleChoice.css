@@ -47,7 +47,7 @@ body {
 
 #choices {
 	width: 775px;
-	float: left;
+	margin: 0 auto;
 }
 
 .choice {
