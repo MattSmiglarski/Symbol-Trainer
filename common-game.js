@@ -67,144 +67,146 @@ function createChoice(answerCallback, key, value) {
 	return choiceEl;
 }
 
+var h = Object.keys(hiragana);
+
 function createGame(config) {
-var game = doOne(hiragana, {
-	questionsHook: config.questionsHook
+	var game = doOne(hiragana, {
+questionsHook: config.questionsHook
 });
 
 game.addHook('question', function() {
-	var statusBar = document.getElementById('status');
-	var questionEl = document.createElement('div');
-	questionEl.className = 'awesome question';
-	questionEl.innerHTML = game.getQuestion();
-	statusBar.insertBefore(questionEl, statusBar.children[0]);
-});
+		var statusBar = document.getElementById('status');
+		var questionEl = document.createElement('div');
+		questionEl.className = 'awesome question';
+		questionEl.innerHTML = game.getQuestion();
+		statusBar.insertBefore(questionEl, statusBar.children[0]);
+		});
 
 game.addHook('correct', function() {
-	document.getElementById('status').style.backgroundColor = 'green';
-	window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
+		document.getElementById('status').style.backgroundColor = 'green';
+		window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
 
-});
+		});
 game.addHook('incorrect', function() {
-	document.getElementById('status').style.backgroundColor = 'red';
-	document.getElementById('status').children[0].style.backgroundColor = 'red';
-	window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
+		document.getElementById('status').style.backgroundColor = 'red';
+		document.getElementById('status').children[0].style.backgroundColor = 'red';
+		window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
 
-});
+		});
 
 var cheapRefreshPlugin = game.plugin('Refresh', function() {
-	document.location = document.location;
-});
+		document.location = document.location;
+		});
 var romanjiPlugin = game.plugin('Romanji', function(flag) {
-	var hints = document.getElementsByClassName('hint');
-	for (var i=0; i<hints.length; i++) {
+		var hints = document.getElementsByClassName('hint');
+		for (var i=0; i<hints.length; i++) {
 		hints[i].style.display = (flag? 'block' : 'none');
-	}
-});
+		}
+		});
 
 var soundPlugin = game.plugin('Sound', function(flag) {});
 soundPlugin.setCallback('incorrect', (function() {
-	var incorrectAudio = new Audio();
-	incorrectAudio.src = 'audio/dialog-error.ogg';
-	incorrectAudio.load();
+			var incorrectAudio = new Audio();
+			incorrectAudio.src = 'audio/dialog-error.ogg';
+			incorrectAudio.load();
 
-	return function() {
-		incorrectAudio.play();
-	}
-}()));
+			return function() {
+			incorrectAudio.play();
+			}
+			}()));
 soundPlugin.setCallback('correct', (function() {
-	function s(filename) {
-		var pronounciationAudio = new Audio();
-		pronounciationAudio.src = 'audio/' + filename + '.wav';
-		pronounciationAudio.load();
-		return pronounciationAudio;
-	}
+			function s(filename) {
+			var pronounciationAudio = new Audio();
+			pronounciationAudio.src = 'audio/' + filename + '.wav';
+			pronounciationAudio.load();
+			return pronounciationAudio;
+			}
 
-	var sounds;
+			var sounds;
 
-	function init() {
-	sounds = {
- '&#x3042;':s('a')
-,'&#x3044;':s('i')
-,'&#x3046;':s('u')
-,'&#x3048;':s('e')
-,'&#x304A;':s('o')
-,'&#x304B;':s('ka')
-,'&#x304C;':s('ga')
-,'&#x304D;':s('ki')
-,'&#x304E;':s('gi')
-,'&#x304F;':s('ku')
-,'&#x3050;':s('gu')
-,'&#x3051;':s('ke')
-,'&#x3052;':s('ge')
-,'&#x3053;':s('ko')
-,'&#x3054;':s('go')
-,'&#x3055;':s('sa')
-,'&#x3056;':s('za')
-,'&#x3057;':s('si')
-,'&#x3058;':s('zi')
-,'&#x3059;':s('su')
-,'&#x305A;':s('zu')
-,'&#x305B;':s('se')
-,'&#x305C;':s('ze')
-,'&#x305E;':s('zo')
-,'&#x305F;':s('ta')
-,'&#x3060;':s('da')
-,'&#x3061;':s('ti')
-,'&#x3064;':s('tu')
-,'&#x3066;':s('te')
-,'&#x3067;':s('de')
-,'&#x3068;':s('to')
-,'&#x3069;':s('do')
-,'&#x306A;':s('na')
-,'&#x306B;':s('ni')
-,'&#x306C;':s('nu')
-,'&#x306D;':s('ne')
-,'&#x306E;':s('no')
-,'&#x306F;':s('ha')
-,'&#x3070;':s('ba')
-,'&#x3071;':s('pa')
-,'&#x3072;':s('hi')
-,'&#x3073;':s('bi')
-,'&#x3074;':s('pi')
-,'&#x3075;':s('hu')
-,'&#x3076;':s('bu')
-,'&#x3077;':s('pu')
-,'&#x3078;':s('he')
-,'&#x3079;':s('be')
-,'&#x307A;':s('pe')
-,'&#x307B;':s('ho')
-,'&#x307C;':s('bo')
-,'&#x307D;':s('po')
-,'&#x307E;':s('ma')
-,'&#x307F;':s('mi')
-,'&#x3080;':s('mu')
-,'&#x3081;':s('me')
-,'&#x3082;':s('mo')
-,'&#x3084;':s('ya')
-,'&#x3086;':s('yu')
-,'&#x3088;':s('yo')
-,'&#x3089;':s('ra')
-,'&#x308A;':s('ri')
-,'&#x308B;':s('ru')
-,'&#x308C;':s('re')
-,'&#x308D;':s('ro')
-,'&#x308F;':s('wa')
-,'&#x3090;':s('wi')
-,'&#x3092;':s('wo')
-,'&#x3093;':s('n')
-	};
-	}
+			function init() {
+			sounds = {
+			'&#x3042;':s('a')
+			,'&#x3044;':s('i')
+			,'&#x3046;':s('u')
+			,'&#x3048;':s('e')
+			,'&#x304A;':s('o')
+			,'&#x304B;':s('ka')
+			,'&#x304C;':s('ga')
+			,'&#x304D;':s('ki')
+			,'&#x304E;':s('gi')
+			,'&#x304F;':s('ku')
+			,'&#x3050;':s('gu')
+			,'&#x3051;':s('ke')
+			,'&#x3052;':s('ge')
+			,'&#x3053;':s('ko')
+			,'&#x3054;':s('go')
+			,'&#x3055;':s('sa')
+			,'&#x3056;':s('za')
+			,'&#x3057;':s('si')
+			,'&#x3058;':s('zi')
+			,'&#x3059;':s('su')
+			,'&#x305A;':s('zu')
+			,'&#x305B;':s('se')
+			,'&#x305C;':s('ze')
+			,'&#x305E;':s('zo')
+			,'&#x305F;':s('ta')
+			,'&#x3060;':s('da')
+			,'&#x3061;':s('ti')
+			,'&#x3064;':s('tu')
+			,'&#x3066;':s('te')
+			,'&#x3067;':s('de')
+			,'&#x3068;':s('to')
+			,'&#x3069;':s('do')
+			,'&#x306A;':s('na')
+			,'&#x306B;':s('ni')
+			,'&#x306C;':s('nu')
+			,'&#x306D;':s('ne')
+			,'&#x306E;':s('no')
+			,'&#x306F;':s('ha')
+			,'&#x3070;':s('ba')
+			,'&#x3071;':s('pa')
+			,'&#x3072;':s('hi')
+			,'&#x3073;':s('bi')
+			,'&#x3074;':s('pi')
+			,'&#x3075;':s('hu')
+			,'&#x3076;':s('bu')
+			,'&#x3077;':s('pu')
+			,'&#x3078;':s('he')
+			,'&#x3079;':s('be')
+			,'&#x307A;':s('pe')
+			,'&#x307B;':s('ho')
+			,'&#x307C;':s('bo')
+			,'&#x307D;':s('po')
+			,'&#x307E;':s('ma')
+			,'&#x307F;':s('mi')
+			,'&#x3080;':s('mu')
+			,'&#x3081;':s('me')
+			,'&#x3082;':s('mo')
+			,'&#x3084;':s('ya')
+			,'&#x3086;':s('yu')
+			,'&#x3088;':s('yo')
+			,'&#x3089;':s('ra')
+			,'&#x308A;':s('ri')
+			,'&#x308B;':s('ru')
+			,'&#x308C;':s('re')
+			,'&#x308D;':s('ro')
+			,'&#x308F;':s('wa')
+			,'&#x3090;':s('wi')
+			,'&#x3092;':s('wo')
+			,'&#x3093;':s('n')
+			};
+			}
 
-	return function() {
-		if (!sounds) init();
-		var sound = sounds[game.getAnswer()];
-		if (sound) {
-			sound.play();
-		} else {
-			console.log("No sound for " + sound + ":" + game.getAnswer());
-		}
-	}
+			return function() {
+				if (!sounds) init();
+				var sound = sounds[game.getAnswer()];
+				if (sound) {
+					sound.play();
+				} else {
+					console.log("No sound for " + sound + ":" + game.getAnswer());
+				}
+			}
 }()));
 
 
@@ -214,3 +216,135 @@ if (config.init) config.init(game);
 game.start();
 return game;
 }
+
+var anythingStrategy = (function() {
+		var count = 1;
+		var previousQs = {};
+
+		return function() {
+		var data;
+		var i, q;
+
+		data = count%3 == 0? previousQs : hiragana;
+		i = Math.floor(Math.random() * Object.keys(data).length);
+		var q = Object.keys(data)[i];
+		previousQs[q] = 1;
+		count += 1;
+		return q;
+		}
+		}());
+
+function createGrid(game) {
+console.log(game);
+	var config = {
+target: document.getElementById('grid'),
+	setValue: function(target, value) { // Flatten
+		target.appendChild(createChoice(game.answer, value, hiragana[value]));
+	},
+columnSpans: [1,1,1,1,1,3,1,2,2,2,1,1],
+	};
+	var grid = G.create(5, 16, config);
+	var row, col;
+	// Pass into the grid
+	for (col=15; col>=0; col-=1) {
+		if (!game.restrictCol || col === game.restrictCol) {
+			for (row=0; row<5; row+=1) {
+				if (!game.restrictRow || row === game.restrictRow) {
+					grid.setValue(row, col, tableValues[15-col][row]);
+				}
+			}
+		}
+	}
+}
+
+var gridGame = (function () {
+		var mode = 'multichoice';
+		var options = [h[0],h[1],h[2],h[3],h[4]];
+		var data = hiragana; 
+		var currentValue;
+
+		function createMultiChoices(answerCallback, config) {
+		currentValue = options[Math.floor(Math.random() * options.length)];
+		var ideograph = document.getElementById(currentValue);
+		var choicesEl = document.getElementById('choices');
+		var left = options;
+		var i=0;
+		var j, key, choiceEl;
+		var limit = options.length;
+
+		ideograph && (ideograph.style.display = 'block');
+		choicesEl.innerHTML = '';
+		for (i=0; i<limit; i+=1) {
+		j = Math.floor(Math.random() * Object.keys(left).length);
+		key = left[j];
+		choiceEl = createChoice(answerCallback, key, data[key]);
+		choicesEl.appendChild(choiceEl);
+		left = left.slice(0, j).concat(left.slice(j+1));
+		}
+		}
+
+		function questionsHook(answerCallback) {
+			var config = nextQuestionConfig();
+
+			document.getElementById('grid').style.display = 'none';
+			document.getElementById('choices').style.display = 'none';
+
+			if (config.gridConfig) {
+				document.getElementById('grid').style.display = 'block';
+			}
+
+			if (config.multiChoiceConfig) {
+				createMultiChoices(answerCallback, {
+						});
+				document.getElementById('choices').style.display = 'block';
+			}
+			return currentValue;
+		}
+
+		var nextValue = (function() {
+				var count = 1;
+				var previousQs = {};
+
+				return function() {
+				var data;
+				var i, q;
+
+				data = count%3 == 0? previousQs : hiragana;
+				i = Math.floor(Math.random() * Object.keys(data).length);
+				var q = Object.keys(data)[i];
+				previousQs[q] = 1;
+				count += 1;
+				return q;
+				}
+				}());
+
+		function nextQuestionConfig() {
+			var gridConfig;
+			var multiChoiceConfig;
+
+			if (mode == 'grid') {
+				gridConfig = {
+
+				}
+				mode = 'multichoice';
+			} else {
+				multiChoiceConfig = {
+options: 5
+				}
+				//mode = 'grid';
+			}
+
+			return {
+gridConfig: gridConfig,
+		    multiChoiceConfig: multiChoiceConfig
+			}
+		}
+
+		return {
+createChoiceElement: function(game, key, value) {},
+			     questionsHook: questionsHook,
+			     //restrictCol: 2,
+			     init: createGrid
+		};
+}());
+
