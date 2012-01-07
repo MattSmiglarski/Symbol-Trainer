@@ -1,3 +1,5 @@
+var h = Object.keys(hiragana);
+
 function createChoice(answerCallback, key, value) {
 	var choiceEl = document.createElement("div");
 	var progressWrapper = document.createElement("div");
@@ -67,8 +69,6 @@ function createChoice(answerCallback, key, value) {
 	return choiceEl;
 }
 
-var h = Object.keys(hiragana);
-
 function createGame(config) {
 	var game = doOne(hiragana, config);
 
@@ -109,43 +109,20 @@ game.start();
 return game;
 }
 
-var anythingStrategy = (function() {
-		var count = 1;
-		var previousQs = {};
-
-		return function() {
-		var data;
-		var i, q;
-
-		data = count%3 == 0? previousQs : hiragana;
-		i = Math.floor(Math.random() * Object.keys(data).length);
-		var q = Object.keys(data)[i];
-		previousQs[q] = 1;
-		count += 1;
-		return q;
-		}
-		}());
-
-function createGrid(game) {
+function initGrid(game) {
 	var config = {
 target: document.getElementById('grid'),
-	setValue: function(target, value) { // Flatten
-		target.appendChild(createChoice(game.answer, value, hiragana[value]));
+data: tableValues,
+	setValue: function(tableCellTarget, value) {
+		var ideographWidget = createChoice(game.answer, value, hiragana[value]);
+		tableCellTarget.appendChild(ideographWidget);
 	},
 columnSpans: [1,1,1,1,1,3,1,2,2,2,1,1],
+restrictRow: game.restrictRow,
+restrictCol: game.restrictCol,
+rightToLeft: true
 	};
 	var grid = G.create(5, 16, config);
-	var row, col;
-	// Pass into the grid
-	for (col=15; col>=0; col-=1) {
-		if (!game.restrictCol || col === game.restrictCol) {
-			for (row=0; row<5; row+=1) {
-				if (!game.restrictRow || row === game.restrictRow) {
-					grid.setValue(row, col, tableValues[15-col][row]);
-				}
-			}
-		}
-	}
 }
 
 var gridGame = (function () {
@@ -155,7 +132,6 @@ var gridGame = (function () {
 		var currentValue;
 
 		function createMultiChoices(answerCallback, config) {
-		currentValue = options[Math.floor(Math.random() * options.length)];
 		var ideograph = document.getElementById(currentValue);
 		var choicesEl = document.getElementById('choices');
 		var left = options;
@@ -176,6 +152,7 @@ var gridGame = (function () {
 
 		function questionsHook(answerCallback) {
 			var config = nextQuestionConfig();
+			currentValue = options[Math.floor(Math.random() * options.length)];
 
 			document.getElementById('grid').style.display = 'none';
 			document.getElementById('choices').style.display = 'none';
@@ -192,23 +169,6 @@ var gridGame = (function () {
 			return currentValue;
 		}
 
-		var nextValue = (function() {
-				var count = 1;
-				var previousQs = {};
-
-				return function() {
-				var data;
-				var i, q;
-
-				data = count%3 == 0? previousQs : hiragana;
-				i = Math.floor(Math.random() * Object.keys(data).length);
-				var q = Object.keys(data)[i];
-				previousQs[q] = 1;
-				count += 1;
-				return q;
-				}
-				}());
-
 		function nextQuestionConfig() {
 			var gridConfig;
 			var multiChoiceConfig;
@@ -220,9 +180,8 @@ var gridGame = (function () {
 				mode = 'multichoice';
 			} else {
 				multiChoiceConfig = {
-options: 5
 				}
-				//mode = 'grid';
+				mode = 'grid';
 			}
 
 			return {
@@ -235,7 +194,7 @@ gridConfig: gridConfig,
 createChoiceElement: function(game, key, value) {},
 			     questionsHook: questionsHook,
 			     //restrictCol: 2,
-			     init: createGrid
+			     init: initGrid
 		};
 }());
 

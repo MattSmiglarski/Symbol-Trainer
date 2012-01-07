@@ -12,6 +12,8 @@ var G = (function () {
 		var table = document.createElement("table"), i, j, row, cell;
 		var col, colGroup;
 		var config = config || {};
+		var value;
+
 		table.setAttribute('cellspacing', '5px');
 		table.setAttribute('cellpadding', 0);
 
@@ -27,6 +29,15 @@ var G = (function () {
 			row = document.createElement("tr");
 			for (j=0; j<cols; j+=1) {
 				cell = document.createElement("td");
+				if ((!config.restrictCol || col === config.restrictCol) && (!config.restrictRow || row === config.restrictRow)) {
+					if (config.rightToLeft) {
+						value = config.data[cols-1-j][i];
+					} else {
+						value = config.data[j][i];
+					}
+					config.setValue(cell, value);
+					cell.setAttribute('data-value', value);
+				}
 				row.appendChild(cell);
 			}
 			table.appendChild(row);
