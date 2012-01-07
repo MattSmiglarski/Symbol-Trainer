@@ -1,0 +1,20 @@
+Sprintello #1
+=============
+
+Use the same widgets across grid and multiple choice
+Spacing on multple choice
+Clear questions each time, again
+Do not give second chances, but store incorrect on the RHS
+Group questions in blocks of 5 for grid
+Group questions in blocks of 5 for multiple choice 
+
+Getting there
+=============
+
+*Same widgets
+Create all elements up front and store in an object
+Change setValue to setElement on grid.js
+Remove all elements when asking for new question
+Do not create elements when creating multiChoices
+Refactor init code and createChoice
+

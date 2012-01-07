@@ -3,7 +3,7 @@ var G = (function () {
 
 	var defaults = {
 		setValue: function(value) {
-			this.innerHTML = value;
+			this.appendChild(value);
 		}
 	};
 
@@ -29,15 +29,6 @@ var G = (function () {
 			row = document.createElement("tr");
 			for (j=0; j<cols; j+=1) {
 				cell = document.createElement("td");
-				if ((!config.restrictCol || col === config.restrictCol) && (!config.restrictRow || row === config.restrictRow)) {
-					if (config.rightToLeft) {
-						value = config.data[cols-1-j][i];
-					} else {
-						value = config.data[j][i];
-					}
-					config.setValue(cell, value);
-					cell.setAttribute('data-value', value);
-				}
 				row.appendChild(cell);
 			}
 			table.appendChild(row);
@@ -51,8 +42,9 @@ var G = (function () {
 				var cellEl = el.getElementsByTagName('td')[col];
 
 				function setValue(value) {
-					config.setValue(cellEl, value);
-					cellEl.setAttribute('data-value', value);
+					if (value) {
+						cellEl.appendChild(value);
+					}
 				}
 
 				function getValue() {
@@ -78,22 +70,28 @@ var G = (function () {
 			};
 		}
 
+		function cellAt(row, col) {
+			return rowAt(row).cellAt(col);
+		}
+
 		return {
 			el: table,
 			rowAt: rowAt,
-			cellAt: function(row, col) {
-				return rowAt(row).cellAt(col);
-			},
+			cellAt: cellAt,
 			setValue: function(row, col, value) {
 				return rowAt(row).setValue(col, value);
 			},
 			getValue: function(row, col) {
 				return rowAt(row).cellAt(col).getValue();
 			},
-			values: function() {
-				var i,j;
-// implement this, and use to get available values for next question.
-// Add value, create choices, select answer.
+			rows: function() { return target.getElementsByTagName('tr').length },
+			cols: function() { return target.getElementsByTagName('tr')[0].getElementsByTagName('td').length },
+			clear: function() {
+				for (var i=0; i<rows.length; i+=1) {
+					for (var j=0; j<cols.length; j+=1) {
+						cellAt(i, j).innerHTML = '';	
+					}
+				}
 			}
 		};
 	
