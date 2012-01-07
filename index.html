@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="multipleChoice.js"></script>
 	<script type="text/javascript" src="hiragana-grid.js"></script>
 	<script type="text/javascript" src="common-game.js"></script>
+	<script type="text/javascript" src="sound.js"></script>
 </head>
 <body>
 <div id="status"></div>
@@ -24,7 +25,8 @@
 <div id="choices"></div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-createGame(gridGame);
+var game = createGame(gridGame);
+soundSupport(game);
 }, false);
 </script>
 </body>
