@@ -1,9 +1,22 @@
-var msg = document.createElement('div');
 var h = Object.keys(hiragana);
 var grid;
 var choiceElements = {};
 var rightToLeft = true; // Put in a config object or something
 var mode = 'grid';
+var msg;
+
+function message(msgHtml) {
+	msg = document.createElement('div');
+	msg.id = 'qwe';
+	msg.innerHTML = msgHtml;
+	msg.className = 'awesome';
+	msg.style.fontSize = '24pt';
+	msg.style.position = 'absolute';
+	document.body.appendChild(msg);
+	msg.style.top = (window.clientHeight - msg.clientHeight) / 2 + 'px';
+	msg.style.left = (document.body.offsetWidth - msg.clientWidth) / 2 + 'px';
+	window.setTimeout("msg.parentNode.removeChild(msg);", 3000);
+}
 
 function row(n) {
 	var src = tableValues[n];
@@ -138,16 +151,6 @@ function createGame(config) {
 			window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
 			});
 
-	var messageTestPlugin = game.plugin('Message', function(flag) {
-			msg.innerHTML = 'Informational message goes here';
-			msg.style.top = "250px";
-			msg.style.left = "30%";
-			msg.className = 'awesome';
-			msg.style.fontSize = '24pt';
-			msg.style.position = 'absolute';
-document.body.appendChild(msg);
-window.setTimeout("msg.parentNode.removeChild(msg);", 3000);
-			});
 	game.restrictRow = config.restrictRow;
 	game.restrictCol = config.restrictCol;
 	return game;
@@ -294,5 +297,6 @@ if (ideographWidget) tableCellTarget.appendChild(ideographWidget);
 
 		soundSupport(game);
 		game.start();
+		message('<span>Click the correct hiragana to begin.<br/>Questions appear in the status bar at the top left of your screen</span>');
 		}, false);
 
