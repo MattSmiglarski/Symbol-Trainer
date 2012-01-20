@@ -1,3 +1,4 @@
+var msg = document.createElement('div');
 var h = Object.keys(hiragana);
 var grid;
 var choiceElements = {};
@@ -20,6 +21,29 @@ function col(n) {
 	}
 	return dst;
 }	
+
+function arrOfSize(n) {
+	var dst = [];
+	for (var i=0; i<n; i++) {
+		dst[i] = h[i];
+	}
+	return dst;
+}
+
+function arrCopy(src) {
+	var dst = [];
+	for (var i=0; i<src.length; i++) {
+		dst[i] = src[i];
+	}
+	return dst;
+}
+
+function toggleHints(flag) {
+	var hints = document.getElementsByClassName('hint');
+	for (var i=0; i<hints.length; i++) {
+		hints[i].style.display = (flag? 'block' : 'none');
+	}
+}
 
 function createChoiceWidget(answerCallback, key, value) {
 	var choiceEl = document.createElement("div");
@@ -99,13 +123,11 @@ function createChoiceWidget(answerCallback, key, value) {
 function createGame(config) {
 	var game = doOne(hiragana, config);
 
-
 	game.addHook('correct', function() {
 			var questionEl = document.getElementById('questions').children[0];
 			document.getElementById('status').style.backgroundColor = 'green';
 			questionEl.parentNode.removeChild(questionEl);
 			window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
-			romajiPlugin.disable();
 			});
 	game.addHook('incorrect', function() {
 			var questionEl = document.getElementById('questions').children[0];
@@ -114,19 +136,18 @@ function createGame(config) {
 			questionEl.parentNode.removeChild(questionEl);
 			document.getElementById('incorrectAnswers').appendChild(questionEl);
 			window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
-			romajiPlugin.enable();
 			});
 
-	var cheapRefreshPlugin = game.plugin('Refresh', function() {
-			document.location = document.location;
+	var messageTestPlugin = game.plugin('Message', function(flag) {
+			msg.innerHTML = 'Informational message goes here';
+			msg.style.top = "250px";
+			msg.style.left = "30%";
+			msg.className = 'awesome';
+			msg.style.fontSize = '24pt';
+			msg.style.position = 'absolute';
+document.body.appendChild(msg);
+window.setTimeout("msg.parentNode.removeChild(msg);", 3000);
 			});
-	var romajiPlugin = game.plugin('Rōmaji', function(flag) {
-			var hints = document.getElementsByClassName('hint');
-			for (var i=0; i<hints.length; i++) {
-			hints[i].style.display = (flag? 'block' : 'none');
-			}
-			});
-	romajiPlugin.enable();
 	game.restrictRow = config.restrictRow;
 	game.restrictCol = config.restrictCol;
 	return game;
@@ -150,13 +171,22 @@ var doubleClosure = (function () {
 }());
 
 var levels = [
-		{ options: [h[0]], questions: [h[0]], hints: false, mode: 'multichoice' },
-		{ options: [h[0]], questions: [h[0]], hints: false, mode: 'grid' },
-		{ options: row(0), questions: [h[0]], hints: false, mode: 'multichoice' },
-		{ options: row(0), questions: row(0), hints: false, mode: 'multichoice' },
+		{ options: [h[0]], questions: [h[0]], hints: true, mode: 'multichoice' },
+		{ options: [h[0]], questions: [h[0]], hints: true, mode: 'grid' },
+		{ questions: [h[0]], options: arrOfSize(2), hints: false, mode: 'multichoice' },
+		{ questions: [h[0]], options: arrOfSize(5), hints: false, mode: 'multichoice' },
+		{ questions: [h[0]], options: arrOfSize(10), hints: false, mode: 'multichoice' },
+		{ questions: [h[0]], options: arrOfSize(20), hints: false, mode: 'multichoice' },
+		{ questions: [h[0]], options: arrCopy(h), hints: false, mode: 'multichoice' },
 		{ options: row(0), questions: row(0), hints: true, mode: 'grid' },
-		{ options: row(1), questions: row(1), hints: false, mode: 'grid' },
-		{ options: row(2), questions: row(2), hints: false, mode: 'multichoice' },
+		{ options: row(0), questions: row(0), hints: true, mode: 'multichoice' },
+		{ options: row(0), questions: row(0), hints: false, mode: 'multichoice' },
+		{ questions: row(0), options: arrOfSize(6), hints: false, mode: 'grid' },
+		{ questions: row(0), options: arrOfSize(10), hints: false, mode: 'grid' },
+		{ questions: row(0), options: arrOfSize(15), hints: false, mode: 'grid' },
+		{ questions: row(0), options: arrOfSize(20), hints: false, mode: 'grid' },
+		{ questions: row(0), options: arrCopy(h), hints: false, mode: 'grid' },
+		{ questions: row(1), options: row(2), hints: true, mode: 'grid' },
 		{}
 		]
 
@@ -240,6 +270,7 @@ var questionsHook = (function() {
 					createMultiChoices(answerCallback, level);
 					document.getElementById('choices').style.display = 'block';
 				}
+				toggleHints(level.hints);
 				return currentValue;
 				}
 		}());

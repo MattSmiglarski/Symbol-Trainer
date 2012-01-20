@@ -1,0 +1,39 @@
+Show A with hint
+Find A in grid
+Find A in 1, 2, 5, 10, 20, all options
+Col 1 in grid with hints
+Col 1 multichoice with hints
+Col 1 multichoice
+Col 1 multichoice 6 options
+Col 1 multichoice 10 options
+Col 1 multichoice 15 options
+Col 1 multichoice 20 options
+Col 1 multichoice all options
+
+Repeat for col 2
+
+Instructions
+* Click hints
+* On first incorrect display a message before moving the incorrect answer
+
+Get hints working properly
+Write proper questions selector
+Progress bar
+Remove some buttons
+No options attribute for grid levels
+Skip button
+Finish game gracefully
+Clear off incorrect answers every so often with find in 1,2,5,10,20, etc game.
+Remove progress bars on multichoice
+Control width of multichoices
+
+Rejected/Maybes
+=================
+Off-white background
+Remember where you left off
+Display mini grid in bottom left, with progress
+*Animate the mini grid when in grid mode
+*Never hide, just decrease size and corner it
+Fade elements in/out when moving
+
+*Are HTML tweens possible?
