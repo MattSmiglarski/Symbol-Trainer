@@ -4,18 +4,23 @@ var choiceElements = {};
 var rightToLeft = true; // Put in a config object or something
 var mode = 'grid';
 var msg;
+var msgTimer;
 
-function message(msgHtml) {
+function message(msgHtml, top, right) {
+	if (msg) {
+		window.clearTimeout(msgTimer);	
+		msg.parentNode.removeChild(msg);
+	}
 	msg = document.createElement('div');
 	msg.id = 'qwe';
 	msg.innerHTML = msgHtml;
 	msg.className = 'awesome';
-	msg.style.fontSize = '24pt';
 	msg.style.position = 'absolute';
+	msg.style.float = 'right';
 	document.body.appendChild(msg);
-	msg.style.top = (window.clientHeight - msg.clientHeight) / 2 + 'px';
-	msg.style.left = (document.body.offsetWidth - msg.clientWidth) / 2 + 'px';
-	window.setTimeout("msg.parentNode.removeChild(msg);", 3000);
+	msg.style.top = top || '2px';
+	msg.style.right = right || '20px';
+	msgTimer = window.setTimeout("msg.parentNode.removeChild(msg);", 3000);
 }
 
 function row(n) {
@@ -35,18 +40,18 @@ function col(n) {
 	return dst;
 }	
 
-function arrOfSize(n) {
+function dup(index, multiple) {
 	var dst = [];
-	for (var i=0; i<n; i++) {
-		dst[i] = h[i];
+	for (var i=0; i<multiple; i+=1) {
+		dst[i] = h[index];
 	}
 	return dst;
 }
 
-function arrCopy(src) {
+function arrOfSize(n) {
 	var dst = [];
-	for (var i=0; i<src.length; i++) {
-		dst[i] = src[i];
+	for (var i=0; i<n; i++) {
+		dst[i] = h[i];
 	}
 	return dst;
 }
@@ -175,20 +180,21 @@ var doubleClosure = (function () {
 
 var levels = [
 		{ options: [h[0]], questions: [h[0]], hints: true, mode: 'multichoice' },
-		{ options: [h[0]], questions: [h[0]], hints: true, mode: 'grid' },
-		{ questions: [h[0]], options: arrOfSize(2), hints: false, mode: 'multichoice' },
-		{ questions: [h[0]], options: arrOfSize(5), hints: false, mode: 'multichoice' },
+		{ options: [h[0]], questions: [h[0]], hints: true, mode: 'grid', msg: 'This is the standard hiragana layout. It is read top to bottom, right to left.' },
+		{ questions: dup(0, 5), options: arrOfSize(2), hints: false, mode: 'multichoice' },
+		{ options: row(0), questions: row(0), hints: true, mode: 'grid', msg: 'You are now being tested on the vowels in the rightmost column. The hints will disappear on the next question.'},
+		{ questions: dup(0, 5), options: arrOfSize(5), hints: false, mode: 'multichoice' },
+		{ questions: [h[0]], options: arrOfSize(11), hints: false, mode: 'multichoice' },
+		{ questions: [h[0]], options: arrOfSize(11), hints: false, mode: 'multichoice' },
+		{ questions: [h[0]], options: arrOfSize(11), hints: false, mode: 'multichoice' },
 		{ questions: [h[0]], options: arrOfSize(11), hints: false, mode: 'multichoice' },
 		{ questions: [h[0]], options: arrOfSize(22), hints: false, mode: 'multichoice' },
-		{ questions: [h[0]], options: arrCopy(h), hints: false, mode: 'multichoice' },
-		{ options: row(0), questions: row(0), hints: true, mode: 'grid' },
 		{ options: row(0), questions: row(0), hints: true, mode: 'multichoice' },
 		{ options: row(0), questions: row(0), hints: false, mode: 'multichoice' },
 		{ questions: row(0), options: arrOfSize(6), hints: false, mode: 'multichoice' },
 		{ questions: row(0), options: arrOfSize(11), hints: false, mode: 'multichoice' },
 		{ questions: row(0), options: arrOfSize(22), hints: false, mode: 'multichoice' },
 		{ questions: row(0), options: arrOfSize(33), hints: false, mode: 'multichoice' },
-		{ questions: row(0), options: arrCopy(h), hints: false, mode: 'multichoice' },
 		{ questions: row(1), options: row(2), hints: true, mode: 'grid' },
 		{}
 		]
@@ -235,7 +241,10 @@ var questionsHook = (function() {
 			if (mode == 'grid') {
 				level.gridConfig = {};
 			} else {
-				level.multiChoiceConfig = {}
+				level.multiChoiceConfig = {};
+			}
+			if (level.msg) {
+				message(level.msg);
 			}
 			return level;
 		}
@@ -295,8 +304,7 @@ if (ideographWidget) tableCellTarget.appendChild(ideographWidget);
 		choiceElements[h[i]] = createChoiceWidget(game.answer, h[i], hiragana[h[i]]);
 		}
 
-		soundSupport(game);
 		game.start();
-		message('<span>Click the correct hiragana to begin.<br/>Questions appear in the status bar at the top left of your screen</span>');
+		message('&lt;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Questions appear over there. Click the squiggle below to answer.');
 		}, false);
 
