@@ -132,7 +132,6 @@ function createGame(config) {
 	return game;
 }
 
-var options = [h[0],h[1],h[2],h[3],h[4]];
 var data = hiragana; 
 var currentValue;
 
@@ -150,15 +149,22 @@ var doubleClosure = (function () {
 	}());
 }());
 
-var questionsHook = (function() {
-		var levels = [
-		{ options: row(2), questions: row(2), hints: false, mode: 'multichoice' },
+var levels = [
+		{ options: [h[0]], questions: [h[0]], hints: false, mode: 'multichoice' },
+		{ options: [h[0]], questions: [h[0]], hints: false, mode: 'grid' },
+		{ options: row(0), questions: [h[0]], hints: false, mode: 'multichoice' },
+		{ options: row(0), questions: row(0), hints: false, mode: 'multichoice' },
 		{ options: row(0), questions: row(0), hints: true, mode: 'grid' },
 		{ options: row(1), questions: row(1), hints: false, mode: 'grid' },
+		{ options: row(2), questions: row(2), hints: false, mode: 'multichoice' },
 		{}
-		];
-		var i=0;	
+		]
 
+function nextLevelConfig() {
+	return levels.shift();
+}
+
+var questionsHook = (function() {
 
 		function createMultiChoices(answerCallback, config) {
 		var ideograph = document.getElementById(currentValue);
@@ -185,7 +191,7 @@ var questionsHook = (function() {
 			var questionEl;
 			var i,j,ideographWidget;
 
-			var level = levels.shift();
+			var level = nextLevelConfig();
 			mode = level.mode;
 			grid.clear();
 			for (var i=0; i<level.questions.length; i++) {
