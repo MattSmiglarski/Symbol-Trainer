@@ -12,11 +12,8 @@ Col 1 multichoice all options
 
 Repeat for col 2
 
+Levels working as above
 Instructions
-* Click hints
-* On first incorrect display a message before moving the incorrect answer
-
-Get hints working properly
 Write proper questions selector
 Progress bar
 Remove some buttons
@@ -24,8 +21,8 @@ No options attribute for grid levels
 Skip button
 Finish game gracefully
 Clear off incorrect answers every so often with find in 1,2,5,10,20, etc game.
-Remove progress bars on multichoice
-Control width of multichoices
+Remove progress bars on widget
+Control width of multichoice grid
 
 Rejected/Maybes
 =================
@@ -36,4 +33,5 @@ Display mini grid in bottom left, with progress
 *Never hide, just decrease size and corner it
 Fade elements in/out when moving
 
+* On first incorrect display a message before moving the incorrect answer
 *Are HTML tweens possible?
