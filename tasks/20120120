@@ -19,8 +19,6 @@ Levels working as above
 Instructions
 Write proper questions selector
 Progress bar
-Remove some buttons
-No options attribute for grid levels
 Skip button
 Finish game gracefully
 Clear off incorrect answers every so often with find in 1,2,5,10,20, etc game.

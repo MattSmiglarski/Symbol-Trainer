@@ -7,6 +7,7 @@ var messages = {
 	start: '&lt;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Questions appear over there. Click the squiggle below to answer.',
 	grid: 'This is the standard hiragana layout. It is read top to bottom, right to left.',
 	vowels: 'You are now being tested on the vowels in the rightmost column. The hints will disappear on the next set of questions.',
+	gameOver: 'Game over',
 	end: {}
 }
 
@@ -17,20 +18,19 @@ var h = Object.keys(hiragana);
 
 var levels = [
 { options: [h[0]], questions: [h[0]], hints: true, mode: 'multichoice' },
-{ options: [h[0]], questions: [h[0]], hints: true, mode: 'grid', msg: m.grid },
-{ questions: dup(0, 5), options: arrOfSize(2), hints: false, mode: 'multichoice' },
-{ options: row(0), questions: row(0), hints: true, mode: 'grid', msg: m.vowels},
-{ questions: dup(0, 5), options: arrOfSize(5), hints: false, mode: 'multichoice' },
-{ questions: dup(0, 5), options: arrOfSize(11), hints: false, mode: 'multichoice' },
-{ questions: [h[0]], options: arrOfSize(22), hints: false, mode: 'multichoice' },
+{ questions: [h[0]], hints: true, mode: 'grid', msg: m.grid },
+{ questions: dup(0, 5), options: arrOfSize(2), mode: 'multichoice' },
+{ questions: row(0), hints: true, mode: 'grid', msg: m.vowels},
+{ questions: dup(0, 5), options: arrOfSize(5), mode: 'multichoice' },
+{ questions: dup(0, 5), options: arrOfSize(11), mode: 'multichoice' },
+{ questions: [h[0]], options: arrOfSize(22), mode: 'multichoice' },
 { options: row(0), questions: row(0), hints: true, mode: 'multichoice' },
-{ options: row(0), questions: row(0), hints: false, mode: 'multichoice' },
-{ questions: row(0), options: arrOfSize(6), hints: false, mode: 'multichoice' },
-{ questions: row(0), options: arrOfSize(11), hints: false, mode: 'multichoice' },
-{ questions: row(0), options: arrOfSize(22), hints: false, mode: 'multichoice' },
-{ questions: row(0), options: arrOfSize(33), hints: false, mode: 'multichoice' },
-{ questions: row(1), options: row(2), hints: true, mode: 'grid' },
-{}
+{ options: row(0), questions: row(0), mode: 'multichoice' },
+{ questions: row(0), options: arrOfSize(6), mode: 'multichoice' },
+{ questions: row(0), options: arrOfSize(11), mode: 'multichoice' },
+{ questions: row(0), options: arrOfSize(22), mode: 'multichoice' },
+{ questions: row(0), options: arrOfSize(33), mode: 'multichoice' },
+{ questions: row(1), hints: true, mode: 'grid' }
 ];
 
 function currentQuestion() {
@@ -98,6 +98,12 @@ function toggleHints(flag) {
 	for (var i=0; i<hints.length; i++) {
 		hints[i].style.display = (flag? 'block' : 'none');
 	}
+}
+
+function gameOver() {
+	document.getElementById('grid').style.display = 'none';
+	document.getElementById('choices').style.display = 'none';
+	message(m.gameOver);
 }
 
 function createChoiceWidget(answerCallback, key, value) {
@@ -186,6 +192,7 @@ function answer(value, correctCallback, incorrectCallback) {
 		window.setTimeout("document.getElementById('status').style.backgroundColor = ''", 300);
 	}
 
+	if (!currentQuestion()) return;
 	if (data[value] === currentQuestion()) {
 		correctCallback();
 		correct();
@@ -202,7 +209,6 @@ function nextLevel() {
 	var i,j,ideographWidget;
 
 	var level = levels.shift();
-	grid.clear();
 	for (var i=0; i<level.questions.length; i++) {
 		questionEl = createQuestionWidget(data[level.questions[level.questions.length-i-1]]);
 		statusBar.insertBefore(questionEl, statusBar.children[0]);
@@ -217,23 +223,23 @@ function nextLevel() {
 		message(level.msg);
 	}
 
-		document.getElementById('grid').style.display = 'none';
-		document.getElementById('choices').style.display = 'none';
+	document.getElementById('grid').style.display = 'none';
+	document.getElementById('choices').style.display = 'none';
 
-		if (level.gridConfig) {
+	if (level.gridConfig) {
 		for (i=0; i<grid.rows(); i+=1) {
-		if (!level.restrictCol || col === level.restrictCol) {
-		for (var j=0; j<grid.cols(); j+=1) {
-		if (!level.restrictRow || row === level.restrictRow) {
-		var col = grid.cols()-1-j;
-		ideographWidget = choiceElements[level.data[col][i]];
-		grid.setValue(i, j, ideographWidget);
-		}
-		}
-		}
+			if (!level.restrictCol || col === level.restrictCol) {
+				for (var j=0; j<grid.cols(); j+=1) {
+					if (!level.restrictRow || row === level.restrictRow) {
+						var col = grid.cols()-1-j;
+						ideographWidget = choiceElements[level.data[col][i]];
+						grid.setValue(i, j, ideographWidget);
+					}
+				}
+			}
 		}
 		document.getElementById('grid').style.display = 'block';
-		}
+	}
 
 	return level;
 }
@@ -269,8 +275,12 @@ var nextQuestion = (function() {
 
 		return function() {
 		if (!level || !currentQuestion()) {
-		level = nextLevel();
-		if (!level) return;
+		if (!levels.length) {
+			gameOver();
+			return;
+		} else {
+			level = nextLevel();
+		}
 		}
 
 		if (level.multiChoiceConfig) {
