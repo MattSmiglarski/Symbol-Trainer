@@ -6,7 +6,7 @@ var choiceElements = {};
 var messages = {
 	start: '&lt;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Questions appear over there. Click the squiggle below to answer.',
 	grid: 'This is the standard hiragana layout. It is read top to bottom, right to left.',
-	vowels: 'You are now being tested on the vowels in the rightmost column. The hints will disappear on the next set of questions.',
+	vowels: 'You are now being tested on the vowels &#x3042;, &#x3044; &#x3046;, &#x3048;, &#x304A;. The hints will disappear on the next set of questions.',
 	gameOver: 'Game over',
 	end: {}
 }
@@ -18,19 +18,23 @@ var h = Object.keys(hiragana);
 
 var levels = [
 { options: [h[0]], questions: [h[0]], hints: true, mode: 'multichoice' },
-{ questions: [h[0]], hints: true, mode: 'grid', msg: m.grid },
-{ questions: dup(0, 5), options: arrOfSize(2), mode: 'multichoice' },
-{ questions: row(0), hints: true, mode: 'grid', msg: m.vowels},
+{ questions: row(0), hints: true, mode: 'grid', msg: m.grid },
+{ questions: row(1), hints: true, mode: 'grid', msg: 'Column 2'},
+{ questions: row(2), hints: true, mode: 'grid', msg: 'Column 3' },
+{ questions: col(2), hints: true, mode: 'grid', msg: 'Row 3' },
+{ questions: ['&#x304B;','&#x307F;','&#x304B;','&#x305C;'], mode: 'grid', msg: 'Kamikaze', hints: true },
+{ questions: dup(0, 4), options: arrOfSize(2), mode: 'multichoice', msg: 'Find the ' + h[0] + ' symbol' },
+{ questions: dup(0, 5), options: arrOfSize(8), mode: 'multichoice'},
+{ questions: row(0), options: row(0), hints: true, mode: 'multichoice', msg: m.vowels},
+{ questions: row(0), options: row(0), mode: 'multichoice'},
 { questions: dup(0, 5), options: arrOfSize(5), mode: 'multichoice' },
 { questions: dup(0, 5), options: arrOfSize(11), mode: 'multichoice' },
-{ questions: [h[0]], options: arrOfSize(22), mode: 'multichoice' },
 { options: row(0), questions: row(0), hints: true, mode: 'multichoice' },
 { options: row(0), questions: row(0), mode: 'multichoice' },
 { questions: row(0), options: arrOfSize(6), mode: 'multichoice' },
 { questions: row(0), options: arrOfSize(11), mode: 'multichoice' },
 { questions: row(0), options: arrOfSize(22), mode: 'multichoice' },
-{ questions: row(0), options: arrOfSize(33), mode: 'multichoice' },
-{ questions: row(1), hints: true, mode: 'grid' }
+{ questions: row(0), options: arrOfSize(33), mode: 'multichoice' }
 ];
 
 function currentQuestion() {
@@ -71,8 +75,15 @@ function row(n) {
 
 function col(n) {
 	var dst = [];
-	for (var i=0; i<src.length; i++) {
-		dst[i] = tableValues[i][n];
+	var index = 0;
+	var value;
+	for (var i=0; i<tableValues.length; i++) {
+		value = tableValues[i][n];
+		if (value) {
+			dst[index] = tableValues[i][n];
+			index+=1;
+		}
+		value = null;
 	}
 	return dst;
 }	

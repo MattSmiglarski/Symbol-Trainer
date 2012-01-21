@@ -1,29 +1,8 @@
-Use widgets for next question
 Proceed level using progress of widgets, somehow.
-
-Show A with hint
-Find A in grid
-Find A in 1, 2, 5, 10, 20, all options
-Col 1 in grid with hints
-Col 1 multichoice with hints
-Col 1 multichoice
-Col 1 multichoice 6 options
-Col 1 multichoice 10 options
-Col 1 multichoice 15 options
-Col 1 multichoice 20 options
-Col 1 multichoice all options
-
-Repeat for col 2
-
-Levels working as above
-Instructions
 Write proper questions selector
 Progress bar
 Skip button
-Finish game gracefully
 Clear off incorrect answers every so often with find in 1,2,5,10,20, etc game.
-Remove progress bars on widget
-Control width of multichoice grid
 
 Rejected/Maybes
 =================
