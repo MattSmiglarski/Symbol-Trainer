@@ -1,0 +1,45 @@
+New stuff
+==============
+
+Sound
+ - If sound is loaded, put a play button in the top right hand corner shown on hover
+
+Stats widget
+ - Top right corner
+ - Hover over to zoom
+
+Gameplay options - B:1
+ - Choose between grid levels and non-grid levels
+ - Choose between columns, rows and words
+
+Hands free mode
+ - List of interesting words
+ - Play audio while showing element.
+ - First with pauses, then together.
+ - Tween and then zoom out.
+
+Greek
+ - Grid layout as per keyboard layout
+
+Tweaks
+ - Hide progress on grid unless hover
+ - Scalable widget; scalable grid
+
+Blockers
+=============
+
+1) Status bar needs designing
+2) Widgets are not scalable
+3) Does not use canvas
+
+Rejected/Maybes
+=================
+Off-white background
+Remember where you left off
+Display mini grid in bottom left, with progress
+*Animate the mini grid when in grid mode
+*Never hide, just decrease size and corner it
+Fade elements in/out when moving
+
+* On first incorrect display a message before moving the incorrect answer
+*Are HTML tweens possible?

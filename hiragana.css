@@ -20,6 +20,20 @@ body {
 	margin: 2px;
 }
 
+.playButton {
+	display: none;
+}
+
+.progressWrapper:hover .playButton {
+	display: block;
+}
+
+.playButton {
+	background-image: url('play.png');
+	color: e0e0e0;
+	float: right;
+}
+
 .choice {
 	height: 65px;
 	width: 45px;

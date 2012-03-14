@@ -4,7 +4,7 @@ var choiceElements = {};
 
 // Common data
 var messages = {
-	start: '&lt;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Questions appear over there. Click the squiggle below to answer.',
+	start: '&lt;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; Questions appear over there. Click the squiggle below to answer.',
 	grid: 'This is the standard hiragana layout. It is read top to bottom, right to left.',
 	vowels: 'You are now being tested on the vowels &#x3042;, &#x3044; &#x3046;, &#x3048;, &#x304A;. The hints will disappear on the next set of questions.',
 	gameOver: 'Game over',
@@ -123,6 +123,7 @@ function createChoiceWidget(answerCallback, key, value) {
 	var progress = document.createElement("div");
 	var hint = document.createElement("div");
 	var ideograph = document.createElement("span");
+	var playButton = document.createElement("img");
 
 	progressWrapper.className = 'progressWrapper';
 	progress.className = 'progress';
@@ -131,10 +132,18 @@ function createChoiceWidget(answerCallback, key, value) {
 	ideograph.innerHTML = key;
 	hint.className = 'hint';
 	hint.innerHTML = value || "";
+	playButton.src = 'play.png';
+	playButton.className = 'playButton';
+	playButton.onclick = function(evt) {
+		evt.stopPropagation();
+		sounds[key].play();
+		return false;
+	}
 
 	if (!key) return choiceEl;
 
 	progress.appendChild(hint);
+	progressWrapper.appendChild(playButton);
 	progressWrapper.appendChild(progress);
 	choiceEl.appendChild(progressWrapper);
 	choiceEl.appendChild(ideograph);
