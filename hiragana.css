@@ -1,6 +1,16 @@
+@font-face {
+    font-family: Verdana;
+    src: url('hiragana-subset.ttf'),
+    url('hiragana-subset.eot'); /* IE9 */
+}
+
 body {
 	margin: 0;
 	font-family: "Helvetica Neue", "Arial", "Helvetica", "Verdana", sans-serif;
+}
+
+.option {
+    font-family: Verdana;
 }
 
 .progressWrapper {

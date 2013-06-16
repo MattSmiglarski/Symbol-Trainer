@@ -1,4 +1,15 @@
-var tableValues = [
+// Common data
+var messages = {
+	start: '&lt;&mdash;&mdash;&mdash;&mdash; Questions appear over there. Click the squiggle below to answer.',
+	grid: 'This is the standard hiragana layout. It is read top to bottom, right to left.',
+	vowels: 'You are now being tested on the vowels &#x3042;, &#x3044; &#x3046;, &#x3048;, &#x304A;. The hints will disappear on the next set of questions.',
+	gameOver: 'Game over',
+	end: {}
+}
+
+
+
+tableValues = [
 ['&#x3042;'
 ,'&#x3044;'
 ,'&#x3046;'
@@ -96,4 +107,48 @@ var tableValues = [
 ,'&#x3093;'],
 ];
 
+// Aliases
+var m = messages;
+var data = hiragana; 
+var h = Object.keys(hiragana);
 
+var levels = [
+{ options: [h[0]], questions: [h[0]], hints: true, mode: 'multichoice' },
+{ questions: row(0), hints: true, mode: 'grid', msg: m.grid },
+{ questions: row(1), hints: true, mode: 'grid', msg: 'Column 2'},
+{ questions: row(2), hints: true, mode: 'grid', msg: 'Column 3' },
+{ questions: col(2), hints: true, mode: 'grid', msg: 'Row 3' },
+{ questions: ['&#x304B;','&#x307F;','&#x304B;','&#x305C;'], mode: 'grid', msg: 'Kamikaze', hints: true },
+{ questions: dup(0, 4), options: arrOfSize(2), mode: 'multichoice', msg: 'Find the ' + h[0] + ' symbol' },
+{ questions: dup(0, 5), options: arrOfSize(8), mode: 'multichoice'},
+{ questions: row(0), options: row(0), hints: true, mode: 'multichoice', msg: m.vowels},
+{ questions: row(0), options: row(0), mode: 'multichoice'},
+{ questions: dup(0, 5), options: arrOfSize(5), mode: 'multichoice' },
+{ questions: dup(0, 5), options: arrOfSize(11), mode: 'multichoice' },
+{ options: row(0), questions: row(0), hints: true, mode: 'multichoice' },
+{ options: row(0), questions: row(0), mode: 'multichoice' },
+{ questions: row(0), options: arrOfSize(6), mode: 'multichoice' },
+{ questions: row(0), options: arrOfSize(11), mode: 'multichoice' },
+{ questions: row(0), options: arrOfSize(22), mode: 'multichoice' },
+{ questions: row(0), options: arrOfSize(33), mode: 'multichoice' }
+];
+
+
+
+
+function setup() {
+	var config = {
+	target: document.getElementById('grid'),
+	data: tableValues,
+	setValue: setGridValue
+	};
+	grid = G.create(5, 16, config);
+
+	for (var i=0; i<h.length; i+=1) {
+		choiceElements[h[i]] = createChoiceWidget(answer, h[i], hiragana[h[i]]);
+	}
+	message(m.start);
+	nextQuestion();
+}
+
+document.addEventListener('DOMContentLoaded', setup, false);

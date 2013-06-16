@@ -1,10 +1,9 @@
 function s(filename) {
-	window.setTimeout(function() { // Optimisation
-	var pronounciationAudio = new Audio();
-		pronounciationAudio.src = 'audio/' + filename + '.wav';
-		pronounciationAudio.load();
-		return pronounciationAudio;
-}, 1000);}
+    var pronounciationAudio = new Audio();
+    pronounciationAudio.src = 'audio/' + filename + '.wav';
+    pronounciationAudio.load();
+    return pronounciationAudio;
+}
 
 var sounds = {
 		'&#x3042;':s('a')
